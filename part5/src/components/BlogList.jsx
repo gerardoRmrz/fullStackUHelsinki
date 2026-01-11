@@ -1,18 +1,24 @@
+import styled from "styled-components";
 import Blog from "./Blog";
 import NewBlogsForm from './NewBlogsForm'
 import LogoutButton from './LogoutButton'
-import styled from "styled-components";
+import Notification from './Notification'
 
-const BlogList = ({ blogs, user, setUser, newBlog, setNewBlog }) => {
+
+const BlogList = ({ blogs, user, setUser, newBlog, setNewBlog, notificationMessage, setNotificationMessage }) => {
   
   return (
     <>
     <h1>blogs</h1>
-      <StyledP>{user.name} logged in <LogoutButton setUser={setUser}>logout</LogoutButton></StyledP>
-      <NewBlogsForm newBlog={newBlog} setNewBlog={setNewBlog}></NewBlogsForm>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <StyledP>
+        {user.name} logged in <LogoutButton setUser={setUser}>logout</LogoutButton>
+      </StyledP>
+      <Notification message={notificationMessage}>{notificationMessage}</Notification>
+      
+      <NewBlogsForm newBlog={newBlog} setNewBlog={setNewBlog} setNotificationMessage={setNotificationMessage}/>
+      {
+        blogs.map( blog => <Blog key={blog.id} blog={blog} /> )
+      }
     </>
   )
 }

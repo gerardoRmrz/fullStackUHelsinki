@@ -1,12 +1,24 @@
 import styled from "styled-components"
 import services from "../services/blogs"
 
-const NewBlogsForm = ({newBlog, setNewBlog}) => {
+const NewBlogsForm = ({newBlog, setNewBlog, setNotificationMessage}) => {
   
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    services.create(newBlog)
-    setNewBlog( {title:'', author:'', url:''} )
+    try {
+      await services
+        .create(newBlog)
+      setNewBlog( {title:'', author:'', url:''} )
+      setNotificationMessage( {text: `a new ${newBlog.title} by ${newBlog.author} added`, color:'green'} )
+      setTimeout( () => {
+        setNotificationMessage({text:'', color:''})
+      }, 5000 )
+    } catch (error) {     
+        setNotificationMessage( {text:error.message, color: 'red'} )
+        setTimeout( ()=>{
+          setNotificationMessage( {text:'', color:''} )
+        }, 5000 )
+    }
   }
 
   return (

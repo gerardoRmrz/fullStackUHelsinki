@@ -1,8 +1,9 @@
 import styled from "styled-components"
 import loginService from '../services/login'
 import blogServices from '../services/blogs'
+import Notification from "./Notification"
 
-const loginForm = ({ username, password, setUserName, setPassword, setUser }) => {
+const loginForm = ({ username, password, setUserName, setPassword, setUser, notificationMessage, setNotificationMessage }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -22,8 +23,11 @@ const loginForm = ({ username, password, setUserName, setPassword, setUser }) =>
       setUserName('')
       setPassword('')
 
-    } catch (exception) {
-      console.log(exception)
+    } catch (error) {
+      setNotificationMessage( {text:error.message, color: 'red'} )
+      setTimeout( () => {
+        setNotificationMessage( {text: '', color: ''} )
+      }, 5000 )
     }
     
   }
@@ -31,6 +35,7 @@ const loginForm = ({ username, password, setUserName, setPassword, setUser }) =>
   return (
     <>
     <h1>log in to application</h1>
+    <Notification message={notificationMessage}>{notificationMessage}</Notification>
     <StyledForm onSubmit={ e=> handleLogin(e, setUserName, setPassword, setUser) }>
       <label htmlFor='username'>username</label>
       <StyledInput 

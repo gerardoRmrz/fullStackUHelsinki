@@ -8,9 +8,9 @@ const App = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState({text:'', color:''})
 
   const [newBlog, setNewBlog] = useState({ title:'', author:'', url:'' })
-
 
   useEffect(() => {
     blogService.getAll().then(blogs =>{
@@ -32,7 +32,10 @@ const App = () => {
         password={password}
         setUserName={setUserName}
         setPassword={setPassword}
-        setUser={setUser} >
+        setUser={setUser}
+        notificationMessage={notificationMessage}
+        setNotificationMessage={setNotificationMessage}
+        >
       </LoginForm>
   )
 
@@ -44,12 +47,14 @@ const App = () => {
           user={user} 
           setUser={setUser} 
           newBlog={newBlog} 
-          setNewBlog={setNewBlog}>
+          setNewBlog={setNewBlog}
+          notificationMessage={notificationMessage}
+          setNotificationMessage={setNotificationMessage}
+          >
         </BlogList>
       </>
   )}
-
-
+  
   return (
     <div>
       {user === null && loginForm() }
