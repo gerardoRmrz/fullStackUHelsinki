@@ -1,7 +1,13 @@
+import styled from 'styled-components'
+
 const Blog = ({ blog }) => (
-  <div>
+  <StyledDiv>
     {blog.title} {blog.author}
-  </div>  
+  </StyledDiv>  
 )
 
 export default Blog
+
+const StyledDiv = styled.div`
+  font-size: 1.5rem;
+`
