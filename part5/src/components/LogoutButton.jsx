@@ -19,6 +19,5 @@ export default LogoutButton
 const StyledButton = styled.button`
   font-size: 1.5rem;
   margin-left: 10px;
-  width: 100px;
-  
+  width: 100px;  
 `

@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import loginService from '../services/login'
+import blogServices from '../services/blogs'
 
 const loginForm = ({ username, password, setUserName, setPassword, setUser }) => {
 
@@ -15,6 +16,8 @@ const loginForm = ({ username, password, setUserName, setPassword, setUser }) =>
         'loggedBlogappUser', JSON.stringify(user)
       )
       
+      blogServices.setToken(user.token)
+
       setUser(user)
       setUserName('')
       setPassword('')

@@ -9,6 +9,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  const [newBlog, setNewBlog] = useState({ title:'', author:'', url:'' })
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>{
@@ -36,9 +38,17 @@ const App = () => {
 
   const blogsList = () => {
     return (
-      <BlogList blogs={blogs} user={user} setUser={setUser}>
-      </BlogList>
+      <>  
+        <BlogList 
+          blogs={blogs} 
+          user={user} 
+          setUser={setUser} 
+          newBlog={newBlog} 
+          setNewBlog={setNewBlog}>
+        </BlogList>
+      </>
   )}
+
 
   return (
     <div>
