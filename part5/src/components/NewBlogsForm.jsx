@@ -2,31 +2,31 @@ import styled from "styled-components"
 import services from "../services/blogs"
 import blogService from '../services/blogs'
 
-const NewBlogsForm = ({setBlogs, newBlog, setNewBlog, setNotificationMessage}) => {
+const NewBlogsForm = (props) => {
   
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
       await services
-        .create(newBlog)
-        
-      setNotificationMessage( {text: `a new ${newBlog.title} by ${newBlog.author} added`, color:'green'} )
+        .create(props.newBlog)
+
+      props.setNotificationMessage( {text: `a new ${props.newBlog.title} by ${props.newBlog.author} added`, color:'green'} )
       
       const newblogslist = await blogService.getAll()
-      setBlogs(newblogslist)
+      props.setBlogs(newblogslist)
 
       setTimeout( () => {
-        setNotificationMessage({text:'', color:''})
+        props.setNotificationMessage({text:'', color:''})
       }, 5000 )
 
-      setNewBlog( {title:'', author:'', url:''} )
-
+      props.setNewBlog( {title:'', author:'', url:''} )
+      props.setVisible(false)
     } catch (error) {     
-        setNotificationMessage( {text:error.message, color: 'red'} )
+        props.setNotificationMessage( {text:error.message, color: 'red'} )
         setTimeout( ()=>{
-          setNotificationMessage( {text:'', color:''} )
+          props.setNotificationMessage( {text:'', color:''} )
         }, 5000 )
-        setNewBlog( {title:'', author: '', url:''} )
+        props.setNewBlog( {title:'', author: '', url:''} )
     }
   }
 
@@ -37,20 +37,20 @@ const NewBlogsForm = ({setBlogs, newBlog, setNewBlog, setNotificationMessage}) =
         <label htmlFor="blog-title">title:</label>
         <StyledInput id="blog-title"
           type="text"
-          value={newBlog.title} 
-          onChange={ ({target}) => setNewBlog( prevBlog => ({...prevBlog, title: target.value}) )  }>
+          value={props.newBlog.title} 
+          onChange={ ({target}) => props.setNewBlog( prevBlog => ({...prevBlog, title: target.value}) )  }>
         </StyledInput>  
         <label htmlFor="blog-author">author:</label>
         <StyledInput id="blog-author" 
           type="text" 
-          value={newBlog.author} 
-          onChange={ ({target}) => setNewBlog( prevBlog => ({ ...prevBlog, author: target.value }) ) }
+          value={props.newBlog.author} 
+          onChange={ ({target}) => props.setNewBlog( prevBlog => ({ ...prevBlog, author: target.value }) ) }
           ></StyledInput>  
         <label htmlFor="blog-url">url:</label>
         <StyledInput id="blog-url" 
           type="text" 
-          value={newBlog.url} 
-          onChange={ ({target}) => setNewBlog( prevBlog => ({ ...prevBlog, url: target.value}) ) }
+          value={props.newBlog.url} 
+          onChange={ ({target}) => props.setNewBlog( prevBlog => ({ ...prevBlog, url: target.value}) ) }
           ></StyledInput>
         <StyledButton type="submit">create</StyledButton>  
       </StyledBlogsForm>

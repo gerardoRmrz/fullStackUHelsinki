@@ -14,7 +14,6 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState({text:'', color:''})
-  
 
   const [newBlog, setNewBlog] = useState({ title:'', author:'', url:'' })
 
@@ -38,22 +37,29 @@ const App = () => {
   )
 
   const loginForm = () => (
-    <Toggable buttonLabel='login'>
+    <Toggable 
+      buttonLabel='login'
+      username={username}
+      password={password}
+      setUserName={setUserName}
+      setPassword={setPassword}
+      setUser={setUser}
+      notificationMessage={notificationMessage}
+      setNotificationMessage={setNotificationMessage}
+    >
       <LoginForm
-         username={username}
-         password={password}
-         setUserName={setUserName}
-         setPassword={setPassword}
-         setUser={setUser}
-         notificationMessage={notificationMessage}
-         setNotificationMessage={setNotificationMessage}
       />
     </Toggable>
       )
   
   const newBlogsForm = () => (
-    <Toggable buttonLabel='create a new blog'>
-      <NewBlogsForm setBlogs={setBlogs} newBlog={newBlog} setNewBlog={setNewBlog} setNotificationMessage={setNotificationMessage}/>
+    <Toggable 
+        buttonLabel='create a new blog'
+        setBlogs={setBlogs} 
+        newBlog={newBlog} 
+        setNewBlog={setNewBlog} 
+        setNotificationMessage={setNotificationMessage} >
+      <NewBlogsForm/>
     </Toggable>
   )
   

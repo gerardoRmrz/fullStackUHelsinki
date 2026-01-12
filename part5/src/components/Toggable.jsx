@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { Children, isValidElement, cloneElement } from 'react'
 
 const Toggable = (props) => {
   const [visible, setVisible] = useState(false)
@@ -11,13 +12,19 @@ const Toggable = (props) => {
     setVisible(!visible)
   }
 
+  const childrenWithProps = Children.map( props.children, child => {
+    if (isValidElement(child)) {
+      return cloneElement(child, { setVisible: setVisible, ...props })
+    }
+  } )
+
   return (
     <div>
       <div style={hidenWhenVisible}>
         <StyledButton onClick={toggleVisibility}>{props.buttonLabel}</StyledButton>
       </div>
       <div style={showWhenVisible}>
-        {props.children}
+        {childrenWithProps}
         <StyledButton onClick={toggleVisibility}>cancel</StyledButton>
       </div>
     </div>
