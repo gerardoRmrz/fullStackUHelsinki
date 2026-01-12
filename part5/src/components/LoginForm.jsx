@@ -3,7 +3,15 @@ import loginService from '../services/login'
 import blogServices from '../services/blogs'
 import Notification from "./Notification"
 
-const loginForm = ({ username, password, setUserName, setPassword, setUser, notificationMessage, setNotificationMessage }) => {
+const loginForm = ({ 
+  username, 
+  password, 
+  setUserName, 
+  setPassword, 
+  setUser, 
+  notificationMessage, 
+  setNotificationMessage 
+ }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -34,7 +42,7 @@ const loginForm = ({ username, password, setUserName, setPassword, setUser, noti
 
   return (
     <>
-    <h1>log in to application</h1>
+    <StyledH2>Login</StyledH2>
     <Notification message={notificationMessage}>{notificationMessage}</Notification>
     <StyledForm onSubmit={ e=> handleLogin(e, setUserName, setPassword, setUser) }>
       <label htmlFor='username'>username</label>
@@ -43,6 +51,7 @@ const loginForm = ({ username, password, setUserName, setPassword, setUser, noti
           id='username'  
           value={username} 
           onChange={({target}) => setUserName(target.value)}
+          name='username'
       ></StyledInput>
       <label htmlFor="password">password</label>
       <StyledInput 
@@ -73,4 +82,8 @@ const StyledInput = styled.input`
 
 const StyledButton = styled.button`
   font-size: 1.5rem;
+`
+const StyledH2 = styled.h2`
+  font-size: 2.5rem;
+  color: black;
 `

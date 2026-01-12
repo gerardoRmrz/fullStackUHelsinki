@@ -1,29 +1,38 @@
 import styled from "styled-components"
 import services from "../services/blogs"
+import blogService from '../services/blogs'
 
-const NewBlogsForm = ({newBlog, setNewBlog, setNotificationMessage}) => {
+const NewBlogsForm = ({setBlogs, newBlog, setNewBlog, setNotificationMessage}) => {
   
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
       await services
         .create(newBlog)
-      setNewBlog( {title:'', author:'', url:''} )
+        
       setNotificationMessage( {text: `a new ${newBlog.title} by ${newBlog.author} added`, color:'green'} )
+      
+      const newblogslist = await blogService.getAll()
+      setBlogs(newblogslist)
+
       setTimeout( () => {
         setNotificationMessage({text:'', color:''})
       }, 5000 )
+
+      setNewBlog( {title:'', author:'', url:''} )
+
     } catch (error) {     
         setNotificationMessage( {text:error.message, color: 'red'} )
         setTimeout( ()=>{
           setNotificationMessage( {text:'', color:''} )
         }, 5000 )
+        setNewBlog( {title:'', author: '', url:''} )
     }
   }
 
   return (
     <>
-      <h1>create new</h1>
+      <h2>Create a new note</h2>
       <StyledBlogsForm onSubmit={handleSubmit}>
         <label htmlFor="blog-title">title:</label>
         <StyledInput id="blog-title"
