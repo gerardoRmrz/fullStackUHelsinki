@@ -21,7 +21,7 @@ const NewBlogsForm = (props) => {
 
       props.setNewBlog( {title:'', author:'', url:''} )
       props.setVisible(false)
-      
+
     } catch (error) {     
         props.setNotificationMessage( {text:error.message, color: 'red'} )
         setTimeout( ()=>{
@@ -77,5 +77,13 @@ const StyledButton = styled.button`
   font-size: 1.5rem;
   margin-left: 10px;
   width: 100px;
+  &:hover {
+    background-color: darkgray;
+  }
+  &:active {
+    background-color: #004085; 
+    color:white;
+    transform: translateY(1px); 
+  }
 `
 

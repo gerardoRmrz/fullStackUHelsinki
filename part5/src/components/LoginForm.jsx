@@ -82,6 +82,13 @@ const StyledInput = styled.input`
 
 const StyledButton = styled.button`
   font-size: 1.5rem;
+  &:hover {
+    background-color: darkgray;
+  }
+  &:active {
+    background-color: #004085; /* Even darker when clicked */
+    transform: translateY(1px); /* Simple press effect */
+  }
 `
 const StyledH2 = styled.h2`
   font-size: 2.5rem;

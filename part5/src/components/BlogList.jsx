@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Blog from "./Blog";
 
 const BlogList = (props) => {
+
   return (
     <StyledDiv>            
       {
@@ -13,6 +14,7 @@ const BlogList = (props) => {
               blog={blog} 
               setNotificationMessage={props.setNotificationMessage}
               setBlogs={props.setBlogs}
+              user={props.user}
               /> )
       }
     </StyledDiv>

@@ -36,4 +36,12 @@ export default Toggable
 
 const StyledButton = styled.button`
   font-size: 1.5rem;
+  &:hover {
+    background-color: darkgray;
+  }
+  &:active {
+    background-color: #004085;
+    color:white;
+    transform: translateY(1px);
+  }
 `

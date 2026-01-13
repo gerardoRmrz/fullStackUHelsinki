@@ -1,10 +1,10 @@
 import styled from "styled-components"
 
-const UserName = ({user, setUser})=>{
+const UserName = (props)=>{
 
   return (
     <StyledP>
-      {user?.name} logged in <LogoutButton type='button' onClick={ ()=>setUser(null) }>logout</LogoutButton>
+      {props.user?.name} logged in <LogoutButton type='button' onClick={ ()=>props.setUser(null) }>logout</LogoutButton>
     </StyledP>
   )}
 
@@ -15,4 +15,11 @@ const StyledP = styled.p`
 `
 const LogoutButton = styled.button`
   font-size: 1.5rem;
+  &:hover {
+    background-color: darkgray;
+  }
+  &:active {
+    background-color: #004085; /* Even darker when clicked */
+    transform: translateY(1px); /* Simple press effect */
+  }
 `

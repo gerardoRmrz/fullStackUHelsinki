@@ -70,7 +70,7 @@ const App = () => {
           blogs={blogs} 
           setNotificationMessage={setNotificationMessage}
           setBlogs={setBlogs}
-          >
+          user={user}>
         </BlogList>
       </>
   )}

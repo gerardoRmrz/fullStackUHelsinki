@@ -27,8 +27,6 @@ const Blog = (props) => {
           props.setNotificationMessage( {text:'', color:''} )
         }, 5000 )
 
-      console.log(updatedBlogList)
-
       props.setBlogs( updatedBlogList )      
 
     } catch (error) {
@@ -51,13 +49,38 @@ const Blog = (props) => {
     <StyledButton type='button' onClick={showDetailsHandler}>hide</StyledButton>
   )
 
+  const removeBlog = async () => { 
 
+    try{  
+
+      await services.remove(props.blog.id)
+
+      const updatedBlogList = await services.getAll()
+
+      props.setNotificationMessage( {text: `blog ${props.blog.title} ${props.blog.author} successfully removed`, color: 'green'} )
+      
+      setTimeout( ()=>{
+          props.setNotificationMessage( {text:'', color:''} )
+        }, 5000 )
+
+      props.setBlogs( updatedBlogList )
+
+    } catch (error){
+      props.setNotificationMessage( {text: error.message, color: 'green'} )
+      setTimeout( ()=>{
+          props.setNotificationMessage( {text:'', color:''} )
+        }, 5000 )
+    }
+  }
 
   const details = () => (
     <>
       <p>{props.blog.url}</p>
       <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
       <p>{props.blog.userId.name} </p>
+      {props.user.name.toLowerCase()===props.blog.userId.name.toLowerCase()
+        ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton> 
+        : null}
     </>
   )
 
@@ -74,6 +97,29 @@ export default Blog
 
 const StyledButton = styled.button`
   font-size: 0.9rem;
+  border-radius: 5px;
+  &:hover {
+    background-color: darkgray;
+  }
+  &:active {
+    background-color: #004085;
+    color:white;
+    transform: translateY(1px);
+  }
+`
+const RemoveButton = styled.button`
+  font-size: 0.9rem;
+  background-color: cyan;
+  border-radius: 5px;
+  &:hover {
+    background-color: blue;
+    color: white;
+  }
+  &:active {
+    background-color: #004085;
+    color:white; 
+    transform: translateY(1px); 
+  }
 `
 
 const StyledDiv = styled.div`
