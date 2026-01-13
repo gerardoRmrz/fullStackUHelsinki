@@ -21,6 +21,7 @@ const NewBlogsForm = (props) => {
 
       props.setNewBlog( {title:'', author:'', url:''} )
       props.setVisible(false)
+      
     } catch (error) {     
         props.setNotificationMessage( {text:error.message, color: 'red'} )
         setTimeout( ()=>{

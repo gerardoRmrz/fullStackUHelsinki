@@ -1,35 +1,70 @@
 import styled from 'styled-components'
+import services from '../services/blogs'
+
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = (props) => {
 
   const [show, setShow] = useState(false)
 
-  const showDetails = () => {
+  const showDetailsHandler = () => {
     setShow( !show )
   }
 
+  const likesHandler = async () => {
+    try{
+      const updatedBlog = { ...props.blog }
+
+      updatedBlog.likes += 1
+
+      await services.put(updatedBlog)
+
+      const updatedBlogList = await services.getAll()
+
+      props.setNotificationMessage( {text:'blog successfully updated', color: 'green'} )
+      
+      setTimeout( ()=>{
+          props.setNotificationMessage( {text:'', color:''} )
+        }, 5000 )
+
+      console.log(updatedBlogList)
+
+      props.setBlogs( updatedBlogList )      
+
+    } catch (error) {
+        props.setNotificationMessage( {text:error.message, color: 'red'} )
+        setTimeout( ()=>{
+          props.setNotificationMessage( {text:'', color:''} )
+        }, 5000 )
+      
+    }
+    
+
+  }
+
+
   const viewButton = () => (
-    <StyledButton type='button' onClick={showDetails}>view</StyledButton>
+    <StyledButton type='button' onClick={showDetailsHandler}>view</StyledButton>
   )
   
   const hideButton = () => (
-    <StyledButton type='button' onClick={showDetails}>hide</StyledButton>
+    <StyledButton type='button' onClick={showDetailsHandler}>hide</StyledButton>
   )
+
 
 
   const details = () => (
     <>
-      <p>{blog.url}</p>
-      <p>{blog.likes} <StyledButton type='button'>like</StyledButton></p>
-      <p>{blog.userId.name} </p>
+      <p>{props.blog.url}</p>
+      <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
+      <p>{props.blog.userId.name} </p>
     </>
   )
 
   return (
   <StyledDiv>
     <div>
-      {blog.title} {blog.author} {!show? viewButton(): hideButton()}
+      {props.blog.title} {props.blog.author} {!show? viewButton(): hideButton()}
     </div>
     {show? details(): null}
   </StyledDiv>  

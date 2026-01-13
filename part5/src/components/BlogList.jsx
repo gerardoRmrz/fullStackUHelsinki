@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import Blog from "./Blog";
 
-const BlogList = ({blogs}) => {
-  //console.log(blogs)
+const BlogList = (props) => {
   return (
     <StyledDiv>            
       {
-        blogs.map( blog => <Blog key={blog.id} blog={blog} /> )
+        props
+          .blogs
+          .map( blog => <Blog 
+              key={blog.id} 
+              blog={blog} 
+              setNotificationMessage={props.setNotificationMessage}
+              setBlogs={props.setBlogs}
+              /> )
       }
     </StyledDiv>
   )

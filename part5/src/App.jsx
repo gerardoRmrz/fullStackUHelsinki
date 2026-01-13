@@ -68,7 +68,8 @@ const App = () => {
       <>  
         <BlogList 
           blogs={blogs} 
-          notificationMessage={notificationMessage}
+          setNotificationMessage={setNotificationMessage}
+          setBlogs={setBlogs}
           >
         </BlogList>
       </>

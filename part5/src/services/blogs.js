@@ -22,4 +22,18 @@ const create = async (newBlog) => {
   return response.data
 }
 
-export default { getAll, create, setToken }
+const put = async (updatedBlog) => {
+
+  console.log(updatedBlog)
+
+  const config = {
+    headers: {Authorization: token}
+  }
+  
+  const response = await axios.put(`${baseUrl}/${updatedBlog.id}`, updatedBlog, config)
+
+  return response.data
+}
+
+
+export default { getAll, create, put, setToken }
