@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const LogoutButton = ({ setUser }) => {
 
@@ -9,7 +9,7 @@ const LogoutButton = ({ setUser }) => {
 
   return (
     <>
-      <StyledButton type="button" onClick={logOutHandle}>logout</StyledButton>
+      <StyledButton type='button' onClick={logOutHandle}>logout</StyledButton>
     </>
   )
 }

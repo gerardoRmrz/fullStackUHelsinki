@@ -1,21 +1,21 @@
-import styled from "styled-components";
-import Blog from "./Blog";
+import styled from 'styled-components'
+import Blog from './Blog'
 
 const BlogList = (props) => {
 
   return (
-    <StyledDiv>            
+    <StyledDiv>
       {
         props
           .blogs
           .sort( (a, b) => b.likes - a.likes  )
-          .map( blog => <Blog 
-              key={blog.id} 
-              blog={blog} 
-              setNotificationMessage={props.setNotificationMessage}
-              setBlogs={props.setBlogs}
-              user={props.user}
-              /> )
+          .map( blog => <Blog
+            key={blog.id}
+            blog={blog}
+            setNotificationMessage={props.setNotificationMessage}
+            setBlogs={props.setBlogs}
+            user={props.user}
+          /> )
       }
     </StyledDiv>
   )

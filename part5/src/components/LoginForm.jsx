@@ -1,17 +1,17 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 import loginService from '../services/login'
 import blogServices from '../services/blogs'
-import Notification from "./Notification"
+import Notification from './Notification'
 
-const loginForm = ({ 
-  username, 
-  password, 
-  setUserName, 
-  setPassword, 
-  setUser, 
-  notificationMessage, 
-  setNotificationMessage 
- }) => {
+const loginForm = ({
+  username,
+  password,
+  setUserName,
+  setPassword,
+  setUser,
+  notificationMessage,
+  setNotificationMessage
+}) => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -20,11 +20,11 @@ const loginForm = ({
       const user = await loginService.login({
         username, password
       })
-      
+
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-      
+
       blogServices.setToken(user.token)
 
       setUser(user)
@@ -32,36 +32,36 @@ const loginForm = ({
       setPassword('')
 
     } catch (error) {
-      setNotificationMessage( {text:error.message, color: 'red'} )
+      setNotificationMessage( { text:error.message, color: 'red' } )
       setTimeout( () => {
-        setNotificationMessage( {text: '', color: ''} )
+        setNotificationMessage( { text: '', color: '' } )
       }, 5000 )
     }
-    
+
   }
 
   return (
     <>
-    <StyledH2>Login</StyledH2>
-    <Notification message={notificationMessage}>{notificationMessage}</Notification>
-    <StyledForm onSubmit={ e=> handleLogin(e, setUserName, setPassword, setUser) }>
-      <label htmlFor='username'>username</label>
-      <StyledInput 
+      <StyledH2>Login</StyledH2>
+      <Notification message={notificationMessage}>{notificationMessage}</Notification>
+      <StyledForm onSubmit={ e => handleLogin(e, setUserName, setPassword, setUser) }>
+        <label htmlFor='username'>username</label>
+        <StyledInput
           type='text'
-          id='username'  
-          value={username} 
-          onChange={({target}) => setUserName(target.value)}
+          id='username'
+          value={username}
+          onChange={({ target }) => setUserName(target.value)}
           name='username'
-      ></StyledInput>
-      <label htmlFor="password">password</label>
-      <StyledInput 
+        ></StyledInput>
+        <label htmlFor='password'>password</label>
+        <StyledInput
           type='password'
           id='password'
           value={password}
-          onChange={({target}) => setPassword(target.value)}
-      ></StyledInput>
-      <StyledButton type='submit'>login</StyledButton>
-    </StyledForm>
+          onChange={({ target }) => setPassword(target.value)}
+        ></StyledInput>
+        <StyledButton type='submit'>login</StyledButton>
+      </StyledForm>
     </>
   )
 }

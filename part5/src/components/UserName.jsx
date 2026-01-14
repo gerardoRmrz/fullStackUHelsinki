@@ -1,10 +1,14 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 
-const UserName = (props)=>{
+const UserName = (props) => {
 
   return (
     <StyledP>
-      {props.user?.name} logged in <LogoutButton type='button' onClick={ ()=>props.setUser(null) }>logout</LogoutButton>
+      {props.user?.name} logged in <LogoutButton
+        type='button'
+        onClick={ () => props.setUser(null) }
+      >logout
+      </LogoutButton>
     </StyledP>
   )}
 

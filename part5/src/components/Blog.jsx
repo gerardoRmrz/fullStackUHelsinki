@@ -21,55 +21,52 @@ const Blog = (props) => {
 
       const updatedBlogList = await services.getAll()
 
-      props.setNotificationMessage( {text:'blog successfully updated', color: 'green'} )
-      
-      setTimeout( ()=>{
-          props.setNotificationMessage( {text:'', color:''} )
-        }, 5000 )
+      props.setNotificationMessage( { text:'blog successfully updated', color: 'green' } )
 
-      props.setBlogs( updatedBlogList )      
+      setTimeout( () => {
+        props.setNotificationMessage( { text:'', color:'' } )
+      }, 5000 )
+
+      props.setBlogs( updatedBlogList )
 
     } catch (error) {
-        props.setNotificationMessage( {text:error.message, color: 'red'} )
-        setTimeout( ()=>{
-          props.setNotificationMessage( {text:'', color:''} )
-        }, 5000 )
-      
+      props.setNotificationMessage( { text:error.message, color: 'red' } )
+      setTimeout( () => {
+        props.setNotificationMessage( { text:'', color:'' } )
+      }, 5000 )
     }
-    
-
   }
 
 
   const viewButton = () => (
     <StyledButton type='button' onClick={showDetailsHandler}>view</StyledButton>
   )
-  
+
   const hideButton = () => (
     <StyledButton type='button' onClick={showDetailsHandler}>hide</StyledButton>
   )
 
-  const removeBlog = async () => { 
+  const removeBlog = async () => {
 
-    try{  
+    try{
 
       await services.remove(props.blog.id)
 
       const updatedBlogList = await services.getAll()
 
-      props.setNotificationMessage( {text: `blog ${props.blog.title} ${props.blog.author} successfully removed`, color: 'green'} )
-      
-      setTimeout( ()=>{
-          props.setNotificationMessage( {text:'', color:''} )
-        }, 5000 )
+      props.setNotificationMessage( { text: `blog ${props.blog.title} ${props.blog.author} successfully removed`, color: 'green' } )
+
+      setTimeout( () => {
+        props.setNotificationMessage( { text:'', color:'' } )
+      }, 5000 )
 
       props.setBlogs( updatedBlogList )
 
     } catch (error){
-      props.setNotificationMessage( {text: error.message, color: 'green'} )
-      setTimeout( ()=>{
-          props.setNotificationMessage( {text:'', color:''} )
-        }, 5000 )
+      props.setNotificationMessage( { text: error.message, color: 'green' } )
+      setTimeout( () => {
+        props.setNotificationMessage( { text:'', color:'' } )
+      }, 5000 )
     }
   }
 
@@ -79,19 +76,19 @@ const Blog = (props) => {
       <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
       <p>{props.blog.userId.name} </p>
       {props.user.name.toLowerCase()===props.blog.userId.name.toLowerCase()
-        ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton> 
+        ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton>
         : null}
     </>
   )
 
   return (
-  <StyledDiv>
-    <div>
-      {props.blog.title} {props.blog.author} {!show? viewButton(): hideButton()}
-    </div>
-    {show? details(): null}
-  </StyledDiv>  
-)}
+    <StyledDiv>
+      <div>
+        {props.blog.title} {props.blog.author} {!show? viewButton(): hideButton()}
+      </div>
+      {show? details(): null}
+    </StyledDiv>
+  )}
 
 export default Blog
 

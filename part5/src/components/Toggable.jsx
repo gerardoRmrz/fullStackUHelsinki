@@ -1,12 +1,12 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useState } from 'react'
+import styled from 'styled-components'
 import { Children, isValidElement, cloneElement } from 'react'
 
 const Toggable = (props) => {
   const [visible, setVisible] = useState(false)
 
-  const hidenWhenVisible = {display: visible ? 'none' : ''}
-  const showWhenVisible = {display: visible ? '': 'none'}
+  const hidenWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '': 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)

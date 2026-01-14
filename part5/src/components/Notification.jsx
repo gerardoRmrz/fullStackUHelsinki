@@ -1,6 +1,6 @@
-import styled from "styled-components"
+import styled from 'styled-components'
 
-const Notification = ({ message }) =>{
+const Notification = ({ message }) => {
   if (message?.text==='') {
     return null
   }

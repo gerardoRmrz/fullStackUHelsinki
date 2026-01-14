@@ -13,14 +13,14 @@ const App = () => {
   const [username, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState({text:'', color:''})
+  const [notificationMessage, setNotificationMessage] = useState( { text:'', color:'' } )
 
   const [newBlog, setNewBlog] = useState({ title:'', author:'', url:'' })
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>{
+    blogService.getAll().then(blogs => {
       setBlogs( blogs )}
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const App = () => {
   )
 
   const loginForm = () => (
-    <Toggable 
+    <Toggable
       buttonLabel='login'
       username={username}
       password={password}
@@ -50,31 +50,31 @@ const App = () => {
       <LoginForm
       />
     </Toggable>
-      )
-  
+  )
+
   const newBlogsForm = () => (
-    <Toggable 
-        buttonLabel='create a new blog'
-        setBlogs={setBlogs} 
-        newBlog={newBlog} 
-        setNewBlog={setNewBlog} 
-        setNotificationMessage={setNotificationMessage} >
+    <Toggable
+      buttonLabel='create a new blog'
+      setBlogs={setBlogs}
+      newBlog={newBlog}
+      setNewBlog={setNewBlog}
+      setNotificationMessage={setNotificationMessage} >
       <NewBlogsForm/>
     </Toggable>
   )
-  
+
   const blogsList = () => {
     return (
-      <>  
-        <BlogList 
-          blogs={blogs} 
+      <>
+        <BlogList
+          blogs={blogs}
           setNotificationMessage={setNotificationMessage}
           setBlogs={setBlogs}
           user={user}>
         </BlogList>
       </>
-  )}
-  
+    )}
+
   return (
     <div>
       <StyledH1>Blogs</StyledH1>
