@@ -1,7 +1,6 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import services from '../services/blogs'
-
-import { useState } from 'react'
 
 const Blog = (props) => {
 
@@ -37,7 +36,6 @@ const Blog = (props) => {
     }
   }
 
-
   const viewButton = () => (
     <StyledButton type='button' onClick={showDetailsHandler}>view</StyledButton>
   )
@@ -71,14 +69,14 @@ const Blog = (props) => {
   }
 
   const details = () => (
-    <>
+    <div>
       <p>{props.blog.url}</p>
       <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
       <p>{props.blog.userId.name} </p>
       {props.user.name.toLowerCase()===props.blog.userId.name.toLowerCase()
         ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton>
         : null}
-    </>
+    </div>
   )
 
   return (
@@ -118,7 +116,6 @@ const RemoveButton = styled.button`
     transform: translateY(1px); 
   }
 `
-
 const StyledDiv = styled.div`
   font-size: 1.5rem;
   border-style: solid;

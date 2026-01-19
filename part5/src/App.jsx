@@ -14,8 +14,8 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState( { text:'', color:'' } )
-
   const [newBlog, setNewBlog] = useState({ title:'', author:'', url:'' })
+
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -47,8 +47,7 @@ const App = () => {
       notificationMessage={notificationMessage}
       setNotificationMessage={setNotificationMessage}
     >
-      <LoginForm
-      />
+      <LoginForm/>
     </Toggable>
   )
 
@@ -58,7 +57,8 @@ const App = () => {
       setBlogs={setBlogs}
       newBlog={newBlog}
       setNewBlog={setNewBlog}
-      setNotificationMessage={setNotificationMessage} >
+      setNotificationMessage={setNotificationMessage}
+    >
       <NewBlogsForm/>
     </Toggable>
   )
@@ -81,7 +81,7 @@ const App = () => {
       <Notification message={notificationMessage} />
       {user === null && loginForm() }
       {user !== null && userName() }
-      {user !== null && newBlogsForm() }
+      {user !== null && newBlogsForm()}
       {user !== null && blogsList() }
     </div>
   )
