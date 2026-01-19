@@ -2,8 +2,10 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import vitestGlobals from 'eslint-plugin-vitest-globals/flat'
 
 export default [
+  vitestGlobals(),
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
@@ -18,7 +20,7 @@ export default [
     },
     plugins: {
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh
+      'react-refresh': reactRefresh,
     },
     rules: {
       ...js.configs.recommended.rules,

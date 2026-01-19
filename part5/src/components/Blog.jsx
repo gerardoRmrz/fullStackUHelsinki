@@ -80,7 +80,7 @@ const Blog = (props) => {
   )
 
   return (
-    <StyledDiv>
+    <StyledDiv className='blog'>
       <div>
         {props.blog.title} {props.blog.author} {!show? viewButton(): hideButton()}
       </div>
