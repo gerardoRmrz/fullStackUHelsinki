@@ -72,8 +72,8 @@ const Blog = (props) => {
     <div>
       <p>{props.blog.url}</p>
       <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
-      <p>{props.blog.userId.name} </p>
-      {props.user.name.toLowerCase()===props.blog.userId.name.toLowerCase()
+      <p>{props.blog.userId?.name} </p>
+      {props.user?.name.toLowerCase()===props.blog.userId?.name.toLowerCase()
         ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton>
         : null}
     </div>
