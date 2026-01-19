@@ -70,8 +70,8 @@ const App = () => {
           blogs={blogs}
           setNotificationMessage={setNotificationMessage}
           setBlogs={setBlogs}
-          user={user}>
-        </BlogList>
+          user={user}
+        />
       </>
     )}
 
@@ -79,10 +79,10 @@ const App = () => {
     <div>
       <StyledH1>Blogs</StyledH1>
       <Notification message={notificationMessage} />
-      {user === null && loginForm() }
-      {user !== null && userName() }
-      {user !== null && newBlogsForm()}
-      {user !== null && blogsList() }
+      { user === null && loginForm() }
+      { user !== null && userName() }
+      { user !== null && newBlogsForm() }
+      { user !== null && blogsList() }
     </div>
   )
 }
