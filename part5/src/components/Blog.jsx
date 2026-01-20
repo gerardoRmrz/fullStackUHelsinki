@@ -10,32 +10,6 @@ const Blog = (props) => {
     setShow( !show )
   }
 
-  const likesHandler = async () => {
-    try{
-      const updatedBlog = { ...props.blog }
-
-      updatedBlog.likes += 1
-
-      await services.put(updatedBlog)
-
-      const updatedBlogList = await services.getAll()
-
-      props.setNotificationMessage( { text:'blog successfully updated', color: 'green' } )
-
-      setTimeout( () => {
-        props.setNotificationMessage( { text:'', color:'' } )
-      }, 5000 )
-
-      props.setBlogs( updatedBlogList )
-
-    } catch (error) {
-      props.setNotificationMessage( { text:error.message, color: 'red' } )
-      setTimeout( () => {
-        props.setNotificationMessage( { text:'', color:'' } )
-      }, 5000 )
-    }
-  }
-
   const viewButton = () => (
     <StyledButton type='button' onClick={showDetailsHandler}>view</StyledButton>
   )
@@ -69,9 +43,9 @@ const Blog = (props) => {
   }
 
   const details = () => (
-    <div>
+    <div className='detailsContent'>
       <p>{props.blog.url}</p>
-      <p>{props.blog.likes} <StyledButton type='button' onClick={likesHandler}>like</StyledButton></p>
+      <p>{props.blog.likes} <StyledButton type='button' onClick={() => props.likesHandler(props.blog) }>like</StyledButton></p>
       <p>{props.blog.userId?.name} </p>
       {props.user?.name.toLowerCase()===props.blog.userId?.name.toLowerCase()
         ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton>

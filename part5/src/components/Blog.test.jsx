@@ -18,7 +18,7 @@ describe( 'Render blog', () => {
 
     const element = screen.getByText( `${blog.title} ${blog.author}` )
 
-    screen.debug(element)
+   // screen.debug(element)
 
     expect(element).toBeDefined()
   })
@@ -27,7 +27,7 @@ describe( 'Render blog', () => {
     render(<Blog blog={blog} />)
 
     const element = screen.queryByText(`${blog.url}`)
-    screen.debug(element)
+    //screen.debug(element)
 
     expect(element).toBeNull()
   })
@@ -36,7 +36,7 @@ describe( 'Render blog', () => {
     render(<Blog blog={blog} />)
 
     const element = screen.queryByText(`${blog.likes}`)
-    screen.debug(element)
+    //screen.debug(element)
 
     expect(element).toBeNull()
   })
@@ -54,10 +54,8 @@ describe( 'Se verifica que la url y el número de likes se muestran cuando se ha
 
   test('Si se presiona el botón view, se muestran la url', async ()=> {
 
-    const mockHandler = vi.fn()
-
     render(
-      <Blog blog={blog} viewButton={mockHandler}/>
+      <Blog blog={blog}/>
     )
 
     const user = userEvent.setup()
@@ -65,15 +63,14 @@ describe( 'Se verifica que la url y el número de likes se muestran cuando se ha
     await user.click(button)
 
     const element = screen.queryByText(`${blog.url}`)
-    screen.debug(element)
+    //screen.debug(element)
     expect(element).toBeDefined()
   })
-} )
 
-test('Si se presiona el botón view, se muestran los likes', async ()=> {
+  test('Si se presiona el botón view, se muestran los likes', async ()=> {
   const mockHandler = vi.fn()
   render(
-    <Blog blog={blog} viewButton={mockHandler} />
+    <Blog blog={blog} />
   )
 
   const user = userEvent.setup()
@@ -81,24 +78,36 @@ test('Si se presiona el botón view, se muestran los likes', async ()=> {
   await user.click(button)
 
   const element = screen.queryByText(`${blog.likes}`)
-  screen.debug(element)
+  //screen.debug(element)
   expect(element).toBeDefined()
 
 })
+ //*************************** */     
+} )
 
 
-/* test( 'render content 2', () => {
-  const blog = {
-    title: 'Component testing is done with react-testing-library',
-    author: 'Lou N. Atick',
-    url: 'http://www.some.place.com'
-  }
+describe( 'Realiza una prueba que garantice que si se hace clic dos veces en el botón like se llama dos veces al controlador de eventos que el componente recibió como props'
+  , () => {
+ 
+  test('Si se se hace clic dos veces en el botón like se llama dos veces al controlador de eventos', async () => {
 
-  const { container } = render( <Blog blog={blog} /> )
+    const mockHandler = vi.fn()
 
-  const div = container.querySelector('.blog')
+    render(
+      <Blog blog={blog} likesHandler={mockHandler}/>
+    )
 
-  expect(div).toHaveTextContent(
-    'Component testing is done with react-testing-library'
-  )
-}) */
+    const user = userEvent.setup()
+    const viewButton = screen.getByText('view')
+    await user.click(viewButton)
+    
+    const likesButton = screen.getByText('like')
+    screen.debug(likesButton)
+
+    await user.click(likesButton)
+    await user.click(likesButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
+
+  })
+} )
