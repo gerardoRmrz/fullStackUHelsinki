@@ -1,6 +1,7 @@
 import { render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
+import NewBlogsForm from './NewBlogsForm'
 
 const blog = {
       title: 'Component testing is done with react-testing-library',
@@ -110,4 +111,45 @@ describe( 'Realiza una prueba que garantice que si se hace clic dos veces en el 
     expect(mockHandler.mock.calls).toHaveLength(2)
 
   })
+} )
+
+test( `Verificar que el formulario llama al controlador de eventos que 
+  recibió como props con los detalles correctos cuando se crea un nuevo blog`
+  , async () => {
+
+  const newBlog = {
+    title: 'The Best JavaScript Blogs for Developers in 2025',  
+    author: 'Matthew Warholak',
+    url: 'https://draft.dev/learn/javascript-blogs'
+  }
+
+  const mockHandler = vi.fn()
+
+  const { container } = render ( 
+    <NewBlogsForm 
+      newBlog={newBlog}
+      handleSubmit={mockHandler}
+    /> 
+    )
+  
+  const user = userEvent.setup()
+  
+  const form = container.querySelector('#newBlogForm')
+  const submitButton = container.querySelector('#newBlogSubmitButton')
+  
+  //screen.debug(submitButton)
+  await user.click(submitButton)
+  
+  const titleInput = container.querySelector('#blog-title')
+  const authorInput = container.querySelector('#blog-author')
+  const urlInput = container.querySelector('#blog-url')
+
+  screen.debug(titleInput)
+
+  expect(mockHandler.mock.calls).toHaveLength(1)
+  expect(titleInput.value).toBe(newBlog.title)
+  expect(authorInput.value).toBe(newBlog.author)
+  expect(urlInput.value).toBe(newBlog.url)
+  
+
 } )

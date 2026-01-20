@@ -55,10 +55,15 @@ const NewBlogsForm = (props) => {
     backgroundColor: 'darkgray'
   }
 
+  if (!props.handleSubmit){
+    props = { handleSubmit, ...props }
+  } 
+
+
   return (
     <>
-      <h2>Create a new note</h2>
-      <form onSubmit={handleSubmit} style={formStyle}>
+      <h2>Create a new blog</h2>
+      <form onSubmit={props.handleSubmit} style={formStyle} id='newBlogForm'>
         <label htmlFor='blog-title'>title:</label>
         <input id='blog-title'
           style={inputStyle}
@@ -86,6 +91,7 @@ const NewBlogsForm = (props) => {
           style={ createIsHovered? { ...buttonStyle, ...hoverStyle } : buttonStyle }
           onMouseEnter={ () => setCreateIsHovered(true) }
           onMouseLeave={ () => setCreateIsHovered(false) }
+          id='newBlogSubmitButton'
         >create
         </button>
       </form>
