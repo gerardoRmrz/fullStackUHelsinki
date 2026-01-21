@@ -7,7 +7,12 @@ describe('Blog app', () => {
 
   test('login form is shown', async ({ page }) => {
     const locator = await page.getByText('Blogs')
+
     await expect(locator).toBeVisible()
-    await expect(page.getByRole('form').and( page.getByText('login') )).toBeVisible()
+    await page.getByRole('button', {name: 'login'}).click()
+    await page.getByRole('textbox').first().isVisible()
+    await page.getByRole('textbox').last().isVisible()
+    await page.getByRole('button', {name: 'login'}).isVisible()
+    await page.getByRole('button', {name: 'cancel'}).isVisible()
   })
 })
