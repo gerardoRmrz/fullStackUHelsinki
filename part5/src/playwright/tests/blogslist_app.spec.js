@@ -10,9 +10,13 @@ describe('Blog app', () => {
 
     await expect(locator).toBeVisible()
     await page.getByRole('button', {name: 'login'}).click()
-    await page.getByRole('textbox').first().isVisible()
-    await page.getByRole('textbox').last().isVisible()
-    await page.getByRole('button', {name: 'login'}).isVisible()
-    await page.getByRole('button', {name: 'cancel'}).isVisible()
+    await expect(page.getByRole('textbox').first()).toBeVisible()
+    await expect(page.getByRole('textbox').last()).toBeVisible()
+    await expect(page.getByRole('button', {name: 'login'})).toBeVisible()
+    await expect(page.getByRole('button', {name: 'cancel'})).toBeVisible()
   })
+
+
+  
+
 })
