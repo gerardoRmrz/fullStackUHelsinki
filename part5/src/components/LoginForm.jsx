@@ -40,28 +40,47 @@ const loginForm = ({
 
   }
 
+  const styledInput = {
+    fontSize: '1.5rem',
+    margin: '15px',
+  }
+
+  const styledForm = {
+    fontSize: '1.5rem',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '35vh',
+    marginBottom: '35px'
+  }
   return (
     <>
       <StyledH2>Login</StyledH2>
-      <Notification message={notificationMessage}>{notificationMessage}</Notification>
-      <StyledForm onSubmit={ e => handleLogin(e, setUserName, setPassword, setUser) }>
+      <form
+        id='loginform'
+        onSubmit={ e => handleLogin(e, setUserName, setPassword, setUser) }
+        style = {styledForm}
+      >
         <label htmlFor='username'>username</label>
-        <StyledInput
+        <input
           type='text'
           id='username'
+          data-testid='username'
           value={username}
           onChange={({ target }) => setUserName(target.value)}
           name='username'
-        ></StyledInput>
+          style={styledInput}
+        ></input>
         <label htmlFor='password'>password</label>
-        <StyledInput
+        <input
           type='password'
           id='password'
+          data-testid='password'
           value={password}
           onChange={({ target }) => setPassword(target.value)}
-        ></StyledInput>
+          style={styledInput}
+        ></input>
         <StyledButton type='submit'>login</StyledButton>
-      </StyledForm>
+      </form>
     </>
   )
 }

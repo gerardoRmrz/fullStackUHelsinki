@@ -57,7 +57,7 @@ const NewBlogsForm = (props) => {
 
   if (!props.handleSubmit){
     props = { handleSubmit, ...props }
-  } 
+  }
 
 
   return (
@@ -65,7 +65,9 @@ const NewBlogsForm = (props) => {
       <h2>Create a new blog</h2>
       <form onSubmit={props.handleSubmit} style={formStyle} id='newBlogForm'>
         <label htmlFor='blog-title'>title:</label>
-        <input id='blog-title'
+        <input
+          id='blog-title'
+          data-testid='blog-title'
           style={inputStyle}
           type='text'
           value={props.newBlog.title}
