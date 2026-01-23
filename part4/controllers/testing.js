@@ -3,6 +3,8 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 testingRouter.post('/reset', async (request, response) => {
+  console.log('Data base will be deleted')
+  
   await Blog.deleteMany({})
   await User.deleteMany({})
 

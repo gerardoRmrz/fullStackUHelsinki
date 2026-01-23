@@ -21,11 +21,23 @@ const Toggable = (props) => {
   return (
     <div>
       <div style={hidenWhenVisible}>
-        <StyledButton onClick={toggleVisibility}>{props.buttonLabel}</StyledButton>
+        <StyledButton
+          onClick={toggleVisibility}
+          data-testId={props.buttonLabel}
+          id={props.buttonLabel}
+        >
+          {props.buttonLabel}
+        </StyledButton>
       </div>
       <div style={showWhenVisible}>
         {childrenWithProps}
-        <StyledButton onClick={toggleVisibility}>cancel</StyledButton>
+        <StyledButton
+          onClick={toggleVisibility}
+          data-testId='cancelNewblog'
+          id='cancelNewblog'
+        >
+          cancel
+        </StyledButton>
       </div>
     </div>
   )

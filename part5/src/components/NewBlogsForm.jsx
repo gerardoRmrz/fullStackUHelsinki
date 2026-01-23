@@ -77,12 +77,15 @@ const NewBlogsForm = (props) => {
         <input
           style={inputStyle}
           id='blog-author'
+          data-testid='blog-author'
           type='text'
           value={props.newBlog.author}
           onChange={ ({ target }) => props.setNewBlog( prevBlog => ({ ...prevBlog, author: target.value }) ) }
         ></input>
         <label htmlFor='blog-url'>url:</label>
-        <input id='blog-url'
+        <input
+          id='blog-url'
+          data-testid='blog-url'
           style={inputStyle}
           type='text'
           value={props.newBlog.url}
@@ -94,6 +97,7 @@ const NewBlogsForm = (props) => {
           onMouseEnter={ () => setCreateIsHovered(true) }
           onMouseLeave={ () => setCreateIsHovered(false) }
           id='newBlogSubmitButton'
+          data-testid='newBlogSubmitButton'
         >create
         </button>
       </form>
