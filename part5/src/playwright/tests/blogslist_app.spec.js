@@ -78,6 +78,7 @@ describe('Blog app', () => {
         userData.username,
         userData.password
       )
+
       await createBlog(page, newBlog)
 
       const message = page.getByText(`a new ${newBlog.title} by ${newBlog.author} added`)
@@ -92,6 +93,24 @@ describe('Blog app', () => {
 
       await expect( page.getByTestId('likes-num') ).toHaveText('1 like')
     })
+
+    test('can be deleted by own user', async ({ page }) => {
+      await logginWith(
+        page,
+        userData.username,
+        userData.password
+      )
+
+      await createBlog(page, newBlog)
+      const blogItem = page.getByText(`${newBlog.title} ${newBlog.author}`)
+      await blogItem.waitFor(  )
+
+      await page.getByRole('button', { name: /view/i }).click()
+      await page.getByRole('button',{ name: /remove/i }).click()
+
+      await expect( page.getByTestId('result-message') ).toHaveText(`blog ${newBlog.title} ${newBlog.author} successfully removed`)
+    })
+
 
   } )
 
