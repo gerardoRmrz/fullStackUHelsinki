@@ -111,7 +111,45 @@ describe('Blog app', () => {
       await expect( page.getByTestId('result-message') ).toHaveText(`blog ${newBlog.title} ${newBlog.author} successfully removed`)
     })
 
+    test('can be eliminated jus for the own user', async ({ page, request }) => {
 
+      await logginWith(
+        page,
+        userData.username,
+        userData.password
+      )
+
+      await createBlog(page, newBlog)
+      const blogItem = page.getByText(`${newBlog.title} by ${newBlog.author} added`)
+      await blogItem.waitFor( { state:'hidden' } )
+
+
+      await page.getByRole('button', { name: 'logout' }).click()
+
+      const testUser = {
+        username: 'testUser',
+        name: 'Test User',
+        password: '123456'
+      }
+
+      await request.post('http://localhost:3001/api/users', {
+        data: testUser
+      })
+
+      const login = page.getByRole('button', { name:'login' })
+      await login.waitFor()
+
+      await logginWith( page,
+        testUser.username,
+        testUser.password )
+
+      await page.getByRole('button', { name: /view/i }).click()
+      const blogItem2 = page.getByText(`${newBlog.title} ${newBlog.author}`)
+      await blogItem2.waitFor(  )
+
+      await expect( page.locator('.removeButton') ).toBeHidden()
+
+    })
   } )
 
 })
