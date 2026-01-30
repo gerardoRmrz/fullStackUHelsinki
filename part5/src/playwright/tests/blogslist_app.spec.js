@@ -1,14 +1,23 @@
 import { test, expect, beforeEach, describe } from '@playwright/test'
+import { logginWith, createBlog } from './helper'
 
 describe('Blog app', () => {
+  const userData = {
+    name: 'Lou N. Atick',
+    username: 'louNatick',
+    password: '123456'
+  }
+
+  const newBlog = {
+    title: ' Becoming a Hacker: Must Read Security & Cyber Crime Books',
+    author: 'Matt Fay',
+    url: 'https://javascripttoday.com/blog/becoming-a-hacker-book-list'
+  }
+
   beforeEach( async ({ page, request }) => {
     await request.post('http://localhost:3001/api/testing/reset')
     await request.post('http://localhost:3001/api/users', {
-      data: {
-        name: 'Lou N. Atick',
-        username: 'louNatick',
-        password: '123456'
-      }
+      data: userData
     })
 
     await page.goto('/')
@@ -26,61 +35,64 @@ describe('Blog app', () => {
   })
 
   test('login succeeds with correct credentials', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click()
-    await page.getByTestId('username').fill('louNatick')
-    await page.getByTestId('password').fill('123456')
-    await page.getByRole('button', { name: 'login' }).click()
+    await logginWith(
+      page,
+      userData.username,
+      userData.password
+    )
 
     await expect( page.getByText('Lou N. Atick logged in ') ).toBeVisible()
   })
 
   test('login fails with wrong credentials', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click()
-    await page.getByTestId('username').fill('willSha')
-    await page.getByTestId('password').fill('9784hau293')
-    await page.getByRole('button', { name: 'login' }).click()
+    await logginWith(page, 'louNati', '12345')
 
     await expect( page.getByText('Request failed with status code 401 ') ).toBeVisible()
   })
 
+  describe('When logged in', () => {
 
-
-
-})
-
-describe('When logged in', () => {
-  beforeEach( async ({ page, request }) => {
-    await request.post('http://localhost:3001/api/testing/reset')
-    await request.post('http://localhost:3001/api/users', {
-      data: {
-        name: 'Lou N. Atick',
-        username: 'louNatick',
-        password: '123456'
-      }
+    beforeEach( async ({ page }) => {
+      await page.goto('/')
+      await logginWith(
+        page,
+        userData.username,
+        userData.password
+      )
     })
 
-    await page.goto('/')
-    await page.getByRole('button', { name: 'login' }).click()
-    await page.getByTestId('username').fill('louNatick')
-    await page.getByTestId('password').fill('123456')
-    await page.getByRole('button', { name: 'login' }).click()
+    test('a new blog can be created', async ({ page }) => {
+      await createBlog(page, newBlog)
+      await expect( page.getByText(`a new ${newBlog.title} by ${newBlog.author} added`) ).toBeVisible()
+      await expect( page.getByText(`${newBlog.title} ${newBlog.author}`) ).toBeVisible()
+    })
+
   })
 
-  test('When user login can create a new blog', async ({ page }) => {
-    const newBlog = {
-      title: ' Becoming a Hacker: Must Read Security & Cyber Crime Books',
-      author: 'Matt Fay',
-      url: 'https://javascripttoday.com/blog/becoming-a-hacker-book-list'
-    }
+  describe( 'A blog can be', () => {
 
-    await page.getByTestId('create a new blog').click()
-    await page.getByTestId('blog-title').fill(newBlog.title)
-    await page.getByTestId('blog-author').fill(newBlog.author)
-    await page.getByTestId('blog-url').fill(newBlog.url)
-    await page.getByTestId('newBlogSubmitButton').click()
+    test('edited', async ({ page }) => {
 
-    await expect( page.getByText(`a new ${newBlog.title} by ${newBlog.author} added`) ).toBeVisible()
-    await expect( page.getByText(`${newBlog.title} ${newBlog.author}`) ).toBeVisible()
-  })
+      await logginWith(
+        page,
+        userData.username,
+        userData.password
+      )
+      await createBlog(page, newBlog)
+
+      const message = page.getByText(`a new ${newBlog.title} by ${newBlog.author} added`)
+      await message.waitFor( )
+
+      const blogItem = page.getByText(`${newBlog.title} ${newBlog.author}`)
+      await blogItem.waitFor(  )
+
+      await page.getByRole('button', { name: /view/i }).click()
+
+      await page.getByRole('button',{ name: /like/i }).click()
+
+      await expect( page.getByTestId('likes-num') ).toHaveText('1 like')
+    })
+
+  } )
 
 })
