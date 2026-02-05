@@ -1,5 +1,5 @@
 import { test, expect, beforeEach, describe } from '@playwright/test'
-import { logginWith, createBlog } from './helper'
+import { logginWith, createBlog, createBolgsList} from './helper'
 
 describe('Blog app', () => {
   const userData = {
@@ -13,6 +13,45 @@ describe('Blog app', () => {
     author: 'Matt Fay',
     url: 'https://javascripttoday.com/blog/becoming-a-hacker-book-list'
   }
+
+  const blogList = [
+    {
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 3,
+    },
+    {
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 2
+    },
+    {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 6
+    },
+    {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+      likes: 5
+    },
+    {
+      title: 'TDD harms architecture',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+      likes: 1,
+    },
+    {
+      title: 'Type wars',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+      likes: 4
+    }
+  ]
 
   beforeEach( async ({ page, request }) => {
     await request.post('http://localhost:3001/api/testing/reset')
@@ -146,10 +185,18 @@ describe('Blog app', () => {
       await page.getByRole('button', { name: /view/i }).click()
       const blogItem2 = page.getByText(`${newBlog.title} ${newBlog.author}`)
       await blogItem2.waitFor(  )
-
       await expect( page.locator('.removeButton') ).toBeHidden()
-
     })
+
+    test( 'ordered by likes number', async ({ page, request }) => {
+      const expected_likes = blogList.map( blog => blog.likes ).sort( (a,b) => b-a ).map( likeNum => `${likeNum} like` )
+      const expected_titles = blogList.sort( (a,b) => b.likes-a.likes ).map( blog => blog.title )
+      await logginWith(page, userData.username, userData.password)
+      await createBolgsList(page, request, blogList)
+      const actual_likes = await page.locator('.likesNum').allTextContents()
+      expect(actual_likes).toEqual(expected_likes)
+    })
+
   } )
 
 })
