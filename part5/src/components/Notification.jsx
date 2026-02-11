@@ -6,7 +6,7 @@ const Notification = ({ message }) => {
   }
 
   return (
-    <StyledDiv color={message?.color}> {message?.text} </StyledDiv>
+    <StyledDiv color={message?.color} data-testid='result-message'> {message?.text} </StyledDiv>
   )
 
 }

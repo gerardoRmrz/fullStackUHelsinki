@@ -1,5 +1,5 @@
 import { test, expect, beforeEach, describe } from '@playwright/test'
-import { logginWith, createBlog, createBolgsList} from './helper'
+import { logginWith, createBlog, createBolgsList } from './helper'
 
 describe('Blog app', () => {
   const userData = {
@@ -125,12 +125,12 @@ describe('Blog app', () => {
 
       const blogItem = page.getByText(`${newBlog.title} ${newBlog.author}`)
       await blogItem.waitFor(  )
-
+      const id = await blogItem.evaluate( el => el.id )
       await page.getByRole('button', { name: /view/i }).click()
 
-      await page.getByRole('button',{ name: /like/i }).click()
-
-      await expect( page.getByTestId('likes-num') ).toHaveText('1 like')
+      await page.getByTestId(`like-${id}`).click()
+      const likeElm = page.getByTestId(`likesNum-${id}`)
+      await expect( likeElm ).toHaveText('1 like')
     })
 
     test('can be deleted by own user', async ({ page }) => {
@@ -190,7 +190,6 @@ describe('Blog app', () => {
 
     test( 'ordered by likes number', async ({ page, request }) => {
       const expected_likes = blogList.map( blog => blog.likes ).sort( (a,b) => b-a ).map( likeNum => `${likeNum} like` )
-      const expected_titles = blogList.sort( (a,b) => b.likes-a.likes ).map( blog => blog.title )
       await logginWith(page, userData.username, userData.password)
       await createBolgsList(page, request, blogList)
       const actual_likes = await page.locator('.likesNum').allTextContents()

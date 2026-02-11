@@ -22,7 +22,7 @@ const getBlogId = async(page) => {
 
 const clickManyTimes = async (page, id, blog) => {
   for ( let j = 0; j<blog.likes; j ++ ){
-    console.log('counter: ',j)
+    //console.log('counter: ',j)
     await page.getByTestId(`like-${id}`).click()
     await expect( page.getByTestId(`likesNum-${id}`)).toHaveText(`${j+1} like`, { timeout: 5000 })
   }
@@ -32,7 +32,7 @@ const clickManyTimes = async (page, id, blog) => {
 const createBolgsList = async (page, request, blogList) => {
   for ( const blog of blogList ) {
     await createBlog(page, blog)
-    console.log('Author: ', blog.author, 'likes: ',blog.likes)
+    //console.log('Author: ', blog.author, 'likes: ',blog.likes)
     //await expect(page.getByText(`a new ${blog.title} by ${blog.author} added`)).toBeHidden()
     const item = page.getByText(`${blog.title} ${blog.author}`)
     await expect( item , { timeout: 10000 }).toBeVisible()

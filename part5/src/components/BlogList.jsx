@@ -37,8 +37,9 @@ const BlogList = (props) => {
           .blogs
           .sort( (a, b) => b.likes - a.likes  )
           .map(
-            blog => <Blog
+            (blog) => <Blog
               key={blog.id}
+              id = {blog.id}
               blog={blog}
               setNotificationMessage={props.setNotificationMessage}
               setBlogs={props.setBlogs}

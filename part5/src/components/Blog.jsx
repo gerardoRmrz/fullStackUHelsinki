@@ -42,23 +42,23 @@ const Blog = (props) => {
     }
   }
 
-  const details = () => (
+  const details = (id) => (
     <div className='detailsContent'>
       <p>{props.blog.url}</p>
-      <p>{props.blog.likes} <StyledButton type='button' onClick={() => props.likesHandler(props.blog) }>like</StyledButton></p>
+      <p className='likesNum' data-testId={`likesNum-${id}`}>{props.blog.likes} <StyledButton type='button' data-testId={`like-${id}`} onClick={() => props.likesHandler(props.blog) }>like</StyledButton></p>
       <p>{props.blog.userId?.name} </p>
       {props.user?.name.toLowerCase()===props.blog.userId?.name.toLowerCase()
-        ? <RemoveButton type="button" onClick={removeBlog}>remove</RemoveButton>
+        ? <RemoveButton type="button" onClick={removeBlog} id='removeButton'>remove</RemoveButton>
         : null}
     </div>
   )
 
   return (
     <StyledDiv className='blog'>
-      <div>
+      <div id={props.id}>
         {props.blog.title} {props.blog.author} {!show? viewButton(): hideButton()}
       </div>
-      {show? details(): null}
+      {show? details(props.id): null}
     </StyledDiv>
   )}
 
