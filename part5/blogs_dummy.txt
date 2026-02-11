@@ -1,0 +1,20 @@
+
+
+Becoming a Hacker: Must Read Security & Cyber Crime Books
+Matt Fay
+https://javascripttoday.com/blog/becoming-a-hacker-book-list
+
+
+The Best JavaScript Blogs for Developers in 2025
+Matthew Warholak
+https://draft.dev/learn/javascript-blogs
+
+
+Storing Metadata On Select Option Elements
+Ben Nadel
+https://www.bennadel.com/blog/4860-storing-metadata-on-select-option-elements.htm
+
+
+Image formats: Codecs and compression tools
+Polina Gurtovaia
+https://developer.mozilla.org/en-US/blog/

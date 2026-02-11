@@ -24,7 +24,7 @@ blogsRouter.post('/' , middleware.tokenExtractor, middleware.userExtractor, asyn
   const user = request.user
 
   if (!user) {
-    return response.status(400).json({error: "userId does not founded in database"})
+    return response.status(401).json({error: "userId was not founded in database"})
   }
 
   request.body.likes = request.body.likes?  request.body.likes: 0
@@ -70,18 +70,27 @@ blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, 
 })
 
 
-blogsRouter.put('/:id', async (request, response) => {
-  const id = request.params.id
+blogsRouter.put('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response) => {
+  
+  const user = request.user
 
+  if (!user) {
+    return response.status(401).json({error: "userId was not founded in database"})
+  }
+
+  const {userId, ...newBlog} = request.body
+  const id = request.params.id
+  
   const blogToBeUpdated = await Blog.findById(id)
 
   if (!blogToBeUpdated) {
     return response.status(400).json({message: 'Id not founded in database'})
   }
 
+
   const updatedBlog = await Blog.findByIdAndUpdate(
         id
-      , { ...blogToBeUpdated._doc, likes: blogToBeUpdated.likes+1   }
+      , newBlog
       , {new: true}
     )
 
