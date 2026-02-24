@@ -19,22 +19,21 @@ const asObject = anecdote => {
   }
 }
 
-
 const anecdotesSlice = createSlice({
   name: 'anecdotes',
   initialState: anecdotesAtStart,
   reducers:{
     vote(state, action) {
-      console.log('VOTE')
       const id = action.payload
       const anecdoteToChange = state.find( n => n.id === id )
       const changedAnecdote = {
         ... anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-      return state.map( anecdote => anecdote.id !== id 
-        ? anecdote
-        : changedAnecdote )
+      return state.map( 
+        anecdote => anecdote.id !== id 
+          ? anecdote
+          : changedAnecdote )
     },
     newAnecdote(state, action) {
       state.concat( asObject(action.payload) )
