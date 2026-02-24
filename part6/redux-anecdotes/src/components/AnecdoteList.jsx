@@ -6,6 +6,7 @@ const AnecdoteList = () =>{
   const dispatch = useDispatch()
   
   const filteredAnecdotes = useSelector(state => {
+    
     if ( state.filter === 'ALL' ){
       return state.anecdotes
     }
@@ -15,7 +16,7 @@ const AnecdoteList = () =>{
 
   return (
     <>
-      {filteredAnecdotes.sort((a,b) => b.votes - a.votes ).map(anecdote => (
+      {[...filteredAnecdotes].sort((a,b) => b.votes - a.votes ).map(anecdote => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
