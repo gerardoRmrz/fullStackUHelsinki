@@ -14,6 +14,9 @@ const notificationSlice = createSlice({
       console.log('Notification: ', action)
       return `you added "${action.payload}"`
     },
+    deleteNotification( ) {
+      return ''
+    }
   }
 })
 
