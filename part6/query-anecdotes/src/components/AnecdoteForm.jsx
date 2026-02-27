@@ -1,4 +1,5 @@
-const AnecdoteForm = () => {
+
+const AnecdoteForm = ({ addAnecdote }) => {
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
@@ -9,7 +10,7 @@ const AnecdoteForm = () => {
   return (
     <div>
       <h3>create new</h3>
-      <form onSubmit={onCreate}>
+      <form onSubmit={(event) => addAnecdote(event)}>
         <input name="anecdote" />
         <button type="submit">create</button>
       </form>
