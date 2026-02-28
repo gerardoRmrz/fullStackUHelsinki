@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   BrowserRouter as Router,
   Routes, Route, Link,
-  useParams
+  useParams, useNavigate
 } from 'react-router-dom'
 
 
@@ -59,6 +59,7 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -68,6 +69,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    navigate('/')
   }
 
   return (
@@ -109,6 +111,17 @@ const Anecdote = ({ anecdotes }) => {
 
 }
 
+const Notification = ({ message }) => {
+  const style = {
+    borderStyle:'solid',
+    borderColor: 'red',
+    margin:'10px'
+  }
+  return (
+    <div style={style}>{message}</div>
+  )
+}
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -127,11 +140,18 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [isVisible, setIsVisible] = useState(false)
+  const [newAnecdoteContent, setNewAnecdoteContent] = useState('')
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNewAnecdoteContent(anecdote.content)
+    setIsVisible( state => !state)
+    setTimeout( () => {
+      setIsVisible( state => !state)
+    }, 5000 )
+    setNewAnecdoteContent('')
   }
 
   const anecdoteById = (id) =>
@@ -152,12 +172,14 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Router>
-        <Menu routes={ ['/', '/create', '/about'] }/>      
+        <Menu routes={ ['/', '/create', '/about'] }/>
+        {isVisible? <Notification message={`a new anecdote ${newAnecdoteContent} created!`}/> : null}      
         <Routes>
           <Route path='/anecdotes/:id' element={ <Anecdote anecdotes={anecdotes}/> }></Route>
           <Route path='/' element={ <AnecdoteList anecdotes={anecdotes}/> } />
           <Route path='/about' element={ < About /> } />
-          <Route path='/create' element={ <CreateNew /> }  />
+          <Route path='/create' element={ <CreateNew 
+                  addNew={addNew} setIsVisible={setIsVisible} setNewAnecdoteContent={setNewAnecdoteContent}/> }  />
         </Routes>
       </Router>
       <Footer />
