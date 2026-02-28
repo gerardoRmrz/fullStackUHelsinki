@@ -76,7 +76,7 @@ const CreateNew = (props) => {
     props.author.onChange({ target:{ value:'' } })
     props.info.onChange({ target:{ value:'' } })
   }
-
+ 
   return (
     <div>
       <h2>create a new anecdote</h2>
