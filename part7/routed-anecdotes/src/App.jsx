@@ -71,6 +71,12 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
+  const handleReset = (e) => {
+    props.content.onChange({ target:{ value:'' } })
+    props.author.onChange({ target:{ value:'' } })
+    props.info.onChange({ target:{ value:'' } })
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -87,7 +93,8 @@ const CreateNew = (props) => {
           url for more info
           <input {...props.info} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
+        <button type='button' onClick={handleReset}>reset</button>
       </form>
     </div>
   )
