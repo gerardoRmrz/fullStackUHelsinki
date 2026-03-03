@@ -12,6 +12,7 @@
     "test:report": "playwright show-report"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "axios": "^1.9.0",
     "eslint-config-vitest-globals": "^2.0.2",
     "react": "^19.1.0",

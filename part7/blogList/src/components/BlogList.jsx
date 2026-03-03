@@ -2,11 +2,20 @@ import styled from "styled-components";
 import services from "../services/blogs";
 import Blog from "./Blog";
 
-import { useDispatch } from "react-redux";
-import notificationReducer from "../reducers/notificationReducer";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  errorMessage,
+  clearMessage,
+  updateMessage,
+} from "../reducers/notificationReducer";
+
+import { voteBlog } from "../reducers/blogsReducer";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
+
+  const blogs = useSelector((state) => state.blogs);
 
   const likesHandler = async (blog) => {
     try {
@@ -14,37 +23,23 @@ const BlogList = (props) => {
 
       updatedBlog.likes += 1;
 
-      await services.put(updatedBlog);
-
-      const updatedBlogList = await services.getAll();
-
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: {
-          text: "blog successfully updated",
-          color: "green",
-        },
-      });
+      dispatch(voteBlog(updatedBlog));
+      dispatch(updateMessage());
 
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
-
-      props.setBlogs(updatedBlogList);
     } catch (error) {
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: { text: error.message, color: "red" },
-      });
+      dispatch(errorMessage(error.message));
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
     }
   };
 
   return (
     <StyledDiv>
-      {props.blogs
+      {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <Blog

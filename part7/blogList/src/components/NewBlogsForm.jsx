@@ -1,8 +1,15 @@
 import { useState } from "react";
-import services from "../services/blogs";
 import blogService from "../services/blogs";
 
 import { useDispatch } from "react-redux";
+
+import {
+  newBlogMessage,
+  clearMessage,
+  errorMessage,
+} from "../reducers/notificationReducer";
+
+import { appendBlog } from "../reducers/blogsReducer";
 
 const NewBlogsForm = (props) => {
   const dispatch = useDispatch();
@@ -12,32 +19,18 @@ const NewBlogsForm = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await services.create(props.newBlog);
-
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: {
-          text: `a new ${props.newBlog.title} by ${props.newBlog.author} added`,
-          color: "green",
-        },
-      });
-
-      const newblogslist = await blogService.getAll();
-      props.setBlogs(newblogslist);
-
+      dispatch(appendBlog(props.newBlog));
+      dispatch(newBlogMessage(props.newBlog));
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
 
       props.setNewBlog({ title: "", author: "", url: "" });
       props.setVisible(false);
     } catch (error) {
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: { text: error.message, color: "red" },
-      });
+      dispatch(errorMessage(error.message));
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
       props.setNewBlog({ title: "", author: "", url: "" });
     }

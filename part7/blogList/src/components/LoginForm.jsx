@@ -3,6 +3,8 @@ import loginService from "../services/login";
 import blogServices from "../services/blogs";
 import { useDispatch } from "react-redux";
 
+import { errorMessage, clearMessage } from "../reducers/notificationReducer";
+
 const loginForm = ({
   username,
   password,
@@ -28,12 +30,9 @@ const loginForm = ({
       setUserName("");
       setPassword("");
     } catch (error) {
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: { text: error.message, color: "red" },
-      });
+      dispatch(errorMessage(error.message));
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
     }
   };
@@ -85,7 +84,7 @@ const loginForm = ({
 
 export default loginForm;
 
-const StyledForm = styled.form`
+/* const StyledForm = styled.form`
   font-size: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -96,7 +95,7 @@ const StyledInput = styled.input`
   font-size: 1.5rem;
   margin: 15px;
 `;
-
+ */
 const StyledButton = styled.button`
   font-size: 1.5rem;
   &:hover {

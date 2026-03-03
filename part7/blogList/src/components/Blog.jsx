@@ -1,9 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
-import services from "../services/blogs";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useDispatch } from "react-redux";
-import notificationReducer from "../reducers/notificationReducer";
+import {
+  removeBlogMessage,
+  errorMessage,
+  clearMessage,
+} from "../reducers/notificationReducer";
+
+import { clearBlog } from "../reducers/blogsReducer";
 
 const Blog = (props) => {
   const dispatch = useDispatch();
@@ -28,30 +33,17 @@ const Blog = (props) => {
 
   const removeBlog = async () => {
     try {
-      await services.remove(props.blog.id);
+      dispatch(clearBlog(props.blog.id));
 
-      const updatedBlogList = await services.getAll();
-
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: {
-          text: `blog ${props.blog.title} ${props.blog.author} successfully removed`,
-          color: "green",
-        },
-      });
+      dispatch(removeBlogMessage(props.blog));
 
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
-
-      props.setBlogs(updatedBlogList);
     } catch (error) {
-      dispatch({
-        type: "SET_NOTIFICATION",
-        payload: { text: error.message, color: "green" },
-      });
+      dispatch(errorMessage(error.message));
       setTimeout(() => {
-        dispatch({ type: "CLEAR_NOTIFICATION" });
+        dispatch(clearMessage());
       }, 5000);
     }
   };

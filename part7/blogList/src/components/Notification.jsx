@@ -2,9 +2,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 const Notification = () => {
-  const message = useSelector((state) => state);
-
-  console.log(message);
+  const message = useSelector((state) => state.notifications);
   if (message?.text === "") {
     return null;
   }

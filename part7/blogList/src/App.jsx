@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import LoginForm from "./components/LoginForm";
 import blogService from "./services/blogs";
 import BlogList from "./components/BlogList";
@@ -9,7 +9,10 @@ import NewBlogsForm from "./components/NewBlogsForm";
 import UserName from "./components/UserName";
 import Toggable from "./components/Toggable";
 
+import { initializeBlogs } from "./reducers/blogsReducer";
+
 const App = () => {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,9 +20,7 @@ const App = () => {
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      setBlogs(blogs);
-    });
+    dispatch(initializeBlogs());
   }, []);
 
   useEffect(() => {
