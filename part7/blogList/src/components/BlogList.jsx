@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import services from "../services/blogs";
 import Blog from "./Blog";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +23,7 @@ const BlogList = (props) => {
       updatedBlog.likes += 1;
 
       dispatch(voteBlog(updatedBlog));
-      dispatch(updateMessage());
+      dispatch(updateMessage(updatedBlog.title));
 
       setTimeout(() => {
         dispatch(clearMessage());

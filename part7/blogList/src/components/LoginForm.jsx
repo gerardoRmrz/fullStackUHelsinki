@@ -1,32 +1,16 @@
 import styled from "styled-components";
-import loginService from "../services/login";
-import blogServices from "../services/blogs";
 import { useDispatch } from "react-redux";
 
 import { errorMessage, clearMessage } from "../reducers/notificationReducer";
+import { loginUser } from "../reducers/userReducer";
 
-const loginForm = ({
-  username,
-  password,
-  setUserName,
-  setPassword,
-  setUser,
-}) => {
+const LoginForm = ({ username, password, setUserName, setPassword }) => {
+  const dispatch = useDispatch();
+
   const handleLogin = async (event) => {
-    const dispatch = useDispatch();
     event.preventDefault();
-
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-
-      blogServices.setToken(user.token);
-
-      setUser(user);
+      dispatch(loginUser(username, password));
       setUserName("");
       setPassword("");
     } catch (error) {
@@ -52,11 +36,7 @@ const loginForm = ({
   return (
     <>
       <StyledH2>Login</StyledH2>
-      <form
-        id="loginform"
-        onSubmit={(e) => handleLogin(e, setUserName, setPassword, setUser)}
-        style={styledForm}
-      >
+      <form id="loginform" onSubmit={(e) => handleLogin(e)} style={styledForm}>
         <label htmlFor="username">username</label>
         <input
           type="text"
@@ -82,7 +62,7 @@ const loginForm = ({
   );
 };
 
-export default loginForm;
+export default LoginForm;
 
 /* const StyledForm = styled.form`
   font-size: 1.5rem;

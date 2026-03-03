@@ -21,11 +21,11 @@ export const newBlogMessage = (newBlog) => {
   };
 };
 
-export const updateMessage = () => {
+export const updateMessage = (blogTitle) => {
   return {
     type: "SET_NOTIFICATION",
     payload: {
-      text: "blog successfully updated",
+      text: `blog "${blogTitle}" successfully updated`,
       color: "green",
     },
   };
