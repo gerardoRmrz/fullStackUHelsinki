@@ -74,7 +74,7 @@ const Blog = (props) => {
   return (
     <StyledDiv className="blog">
       <div id={props.id}>
-        {props.blog.title} {props.blog.author}{" "}
+        {props.blog.title} <strong>{props.blog.author}</strong>{" "}
         {!show ? viewButton() : hideButton()}
       </div>
       {show ? details(props.id) : null}
