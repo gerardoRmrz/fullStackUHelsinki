@@ -3,12 +3,12 @@ import { logout } from "../reducers/userReducer";
 
 import styled from "styled-components";
 
-const UserName = () => {
+const UserName = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   return (
     <StyledP>
-      <p>{user?.name} logged in </p>
+      {user?.name} logged in{" "}
       <LogoutButton type="button" onClick={() => dispatch(logout())}>
         logout
       </LogoutButton>
@@ -18,7 +18,7 @@ const UserName = () => {
 
 export default UserName;
 
-const StyledP = styled.div`
+const StyledP = styled.span`
   font-size: 1.5rem;
 `;
 const LogoutButton = styled.button`

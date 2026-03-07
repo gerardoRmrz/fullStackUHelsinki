@@ -21,7 +21,6 @@ const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  //const [user, setUser] = useState(null);
   const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" });
 
   useEffect(() => {
@@ -33,8 +32,6 @@ const App = () => {
   }, []);
 
   const user = useSelector((state) => state.user);
-
-  const userName = () => <UserName />;
 
   const loginForm = () => (
     <Toggable
@@ -59,14 +56,25 @@ const App = () => {
     </Toggable>
   );
 
+  const header = (user) => {
+    if (!user) {
+      return null;
+    }
+    return (
+      <>
+        <Link to={"/"}>blogs</Link> <Link to={"/users"}>users</Link>{" "}
+        <UserName />
+      </>
+    );
+  };
+
   return (
     <Router>
       <div>
+        {header(user)}
         <StyledH1>Blogs</StyledH1>
         <Notification />
         {user === null && loginForm()}
-        {user !== null && userName()}
-
         <Routes>
           <Route
             path="/"
