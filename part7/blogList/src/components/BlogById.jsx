@@ -14,11 +14,14 @@ const BlogById = () => {
   const dispatch = useDispatch();
   const id = useParams().id;
   const blogsList = useSelector((state) => state.blogs);
+  const usersList = useSelector((state) => state.usersList);
   const blog = blogsList.find((blog) => blog.id === id);
+
   if (!blog) {
     return null;
   }
 
+  const blogOwner = usersList.find((user) => user.id === blog.userId.id);
   const likesHandler = async (blog) => {
     try {
       const updatedBlog = { ...blog };
@@ -39,9 +42,21 @@ const BlogById = () => {
     }
   };
 
+  const commentsList = () => {
+    return (
+      <ul>
+        {blog.comments.map((comment, index) => (
+          <li key={index}>{comment}</li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <>
-      <h2>{blog.title}</h2>
+      <h2>
+        {blog.title} by {blog.author}
+      </h2>
       <a href={blog.url}>{blog.url}</a>
       <p>
         {blog.likes} likes {"   "}
@@ -49,7 +64,9 @@ const BlogById = () => {
           like
         </StyledButton>
       </p>
-      <p>added by {blog.author}</p>
+      <p>added by {blogOwner.name}</p>
+      <h3>comments</h3>
+      {commentsList()}
     </>
   );
 };

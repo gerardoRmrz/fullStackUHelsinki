@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
+import { getUsersList } from "./reducers/usersListReducer";
 import LoginForm from "./components/LoginForm";
 import BlogList from "./components/BlogList";
 import BlogById from "./components/BlogById";
@@ -29,6 +29,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUserInfo());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUsersList());
   }, []);
 
   const user = useSelector((state) => state.user);
