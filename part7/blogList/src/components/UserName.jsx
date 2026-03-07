@@ -8,7 +8,7 @@ const UserName = () => {
   const user = useSelector((state) => state.user);
   return (
     <StyledP>
-      {user?.name} logged in{" "}
+      <p>{user?.name} logged in </p>
       <LogoutButton type="button" onClick={() => dispatch(logout())}>
         logout
       </LogoutButton>
@@ -18,7 +18,7 @@ const UserName = () => {
 
 export default UserName;
 
-const StyledP = styled.p`
+const StyledP = styled.div`
   font-size: 1.5rem;
 `;
 const LogoutButton = styled.button`

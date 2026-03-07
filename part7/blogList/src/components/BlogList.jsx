@@ -38,6 +38,7 @@ const BlogList = (props) => {
 
   return (
     <StyledDiv>
+      {props.newBlogsForm()}
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (

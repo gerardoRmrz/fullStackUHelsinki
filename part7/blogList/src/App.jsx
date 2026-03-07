@@ -10,6 +10,7 @@ import NewBlogsForm from "./components/NewBlogsForm";
 import UserName from "./components/UserName";
 import Toggable from "./components/Toggable";
 import Users from "./components/Users";
+import UserById from "./components/UserById";
 
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { getUserInfo } from "./reducers/userReducer";
@@ -57,14 +58,6 @@ const App = () => {
     </Toggable>
   );
 
-  const blogsList = () => {
-    return (
-      <>
-        <BlogList user={user} />
-      </>
-    );
-  };
-
   return (
     <Router>
       <div>
@@ -72,12 +65,14 @@ const App = () => {
         <Notification />
         {user === null && loginForm()}
         {user !== null && userName()}
+
         <Routes>
+          <Route
+            path="/"
+            element={<BlogList user={user} newBlogsForm={newBlogsForm} />}
+          />
           <Route path="/users" element={<Users />}></Route>
-          {/* }
-          
-          {user !== null && newBlogsForm()}
-          {user !== null && blogsList()} */}
+          <Route path="/users/:id" element={<UserById />} />
         </Routes>
       </div>
     </Router>

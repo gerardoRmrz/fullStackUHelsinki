@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsersList } from "../reducers/usersListReducer";
+import { Link } from "react-router-dom";
+
 const Users = () => {
   const dispatch = useDispatch();
 
@@ -15,7 +17,7 @@ const Users = () => {
     const result = [];
     for (const user of usersList) {
       const blogUser = blogList.filter((blog) => blog.userId.id == user.id);
-      result.push([user.name, blogUser.length]);
+      result.push([user, blogUser]);
     }
     return (
       <table style={{ textAlign: "left" }}>
@@ -28,13 +30,21 @@ const Users = () => {
         <tbody>
           {result.map((item, index) => (
             <tr key={index}>
-              <td>{item[0]}</td>
-              <td>{item[1]}</td>
+              <td>
+                <Link style={padding} to={`/users/${item[0].id}`}>
+                  {item[0].name}
+                </Link>
+              </td>
+              <td>{item[1].length}</td>
             </tr>
           ))}
         </tbody>
       </table>
     );
+  };
+
+  const padding = {
+    padding: 5,
   };
 
   return (
