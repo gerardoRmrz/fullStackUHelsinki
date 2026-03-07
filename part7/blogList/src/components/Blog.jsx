@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import {
   removeBlogMessage,
@@ -19,18 +20,6 @@ const Blog = (props) => {
     setShow(!show);
   };
 
-  const viewButton = () => (
-    <StyledButton type="button" onClick={showDetailsHandler}>
-      view
-    </StyledButton>
-  );
-
-  const hideButton = () => (
-    <StyledButton type="button" onClick={showDetailsHandler}>
-      hide
-    </StyledButton>
-  );
-
   const removeBlog = async () => {
     try {
       dispatch(clearBlog(props.blog.id));
@@ -48,36 +37,12 @@ const Blog = (props) => {
     }
   };
 
-  const details = (id) => (
-    <div className="detailsContent">
-      <p>{props.blog.url}</p>
-      <p className="likesNum" data-testId={`likesNum-${id}`}>
-        {props.blog.likes}{" "}
-        <StyledButton
-          type="button"
-          data-testId={`like-${id}`}
-          onClick={() => props.likesHandler(props.blog)}
-        >
-          like
-        </StyledButton>
-      </p>
-      <p>{props.blog.userId?.name} </p>
-      {props.user?.name.toLowerCase() ===
-      props.blog.userId?.name.toLowerCase() ? (
-        <RemoveButton type="button" onClick={removeBlog} id="removeButton">
-          remove
-        </RemoveButton>
-      ) : null}
-    </div>
-  );
-
   return (
     <StyledDiv className="blog">
       <div id={props.id}>
-        {props.blog.title} <strong>{props.blog.author}</strong>{" "}
-        {!show ? viewButton() : hideButton()}
+        <Link to={`/blogs/${props.id}`}>{props.blog.title}</Link>{" "}
+        <strong>{props.blog.author}</strong>
       </div>
-      {show ? details(props.id) : null}
     </StyledDiv>
   );
 };

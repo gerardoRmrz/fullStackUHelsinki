@@ -11,7 +11,7 @@ const UserById = () => {
     return (
       <ul>
         {blogUser.map((blog, index) => (
-          <li key={index}> {blog.title} </li>
+          <li key={index}> {blog.title}</li>
         ))}
       </ul>
     );

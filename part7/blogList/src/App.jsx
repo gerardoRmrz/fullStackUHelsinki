@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import LoginForm from "./components/LoginForm";
 import BlogList from "./components/BlogList";
+import BlogById from "./components/BlogById";
 import styled from "styled-components";
 import Notification from "./components/Notification";
 import NewBlogsForm from "./components/NewBlogsForm";
@@ -73,6 +74,7 @@ const App = () => {
           />
           <Route path="/users" element={<Users />}></Route>
           <Route path="/users/:id" element={<UserById />} />
+          <Route path="/blogs/:id" element={<BlogById />} />
         </Routes>
       </div>
     </Router>
