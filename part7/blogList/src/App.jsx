@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import LoginForm from "./components/LoginForm";
 import BlogList from "./components/BlogList";
@@ -8,6 +9,7 @@ import Notification from "./components/Notification";
 import NewBlogsForm from "./components/NewBlogsForm";
 import UserName from "./components/UserName";
 import Toggable from "./components/Toggable";
+import Users from "./components/Users";
 
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { getUserInfo } from "./reducers/userReducer";
@@ -58,20 +60,27 @@ const App = () => {
   const blogsList = () => {
     return (
       <>
-        <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
+        <BlogList user={user} />
       </>
     );
   };
 
   return (
-    <div>
-      <StyledH1>Blogs</StyledH1>
-      <Notification />
-      {user === null && loginForm()}
-      {user !== null && userName()}
-      {user !== null && newBlogsForm()}
-      {user !== null && blogsList()}
-    </div>
+    <Router>
+      <div>
+        <StyledH1>Blogs</StyledH1>
+        <Notification />
+        {user === null && loginForm()}
+        {user !== null && userName()}
+        <Routes>
+          <Route path="/users" element={<Users />}></Route>
+          {/* }
+          
+          {user !== null && newBlogsForm()}
+          {user !== null && blogsList()} */}
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
