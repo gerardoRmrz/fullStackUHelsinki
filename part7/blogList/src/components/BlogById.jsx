@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import {
-  errorMessage,
-  clearMessage,
+  commentMessage,
   updateMessage,
+  clearMessage,
+  errorMessage,
 } from "../reducers/notificationReducer";
+
+import { addCommentBlog } from "../reducers/blogsReducer";
 
 import { voteBlog } from "../reducers/blogsReducer";
 
@@ -52,6 +55,33 @@ const BlogById = () => {
     );
   };
 
+  const commentInput = () => {
+    const handleClick = (event) => {
+      event.preventDefault();
+      const newComment = event.target.comment.value;
+      console.log("Click comment button", newComment);
+      try {
+        dispatch(addCommentBlog(blog, newComment));
+        dispatch(commentMessage(newComment));
+        setTimeout(() => {
+          dispatch(clearMessage());
+        }, 5000);
+      } catch (error) {
+        dispatch(errorMessage(error.message));
+        setTimeout(() => {
+          dispatch(clearMessage());
+        }, 5000);
+      }
+      event.target.comment.value = "";
+    };
+    return (
+      <form onSubmit={(event) => handleClick(event)}>
+        <input type="text" name="comment"></input>
+        <button type="submit">add comments</button>
+      </form>
+    );
+  };
+
   return (
     <>
       <h2>
@@ -66,6 +96,7 @@ const BlogById = () => {
       </p>
       <p>added by {blogOwner.name}</p>
       <h3>comments</h3>
+      {commentInput()}
       {commentsList()}
     </>
   );

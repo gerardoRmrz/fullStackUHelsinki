@@ -48,4 +48,14 @@ export const voteBlog = (updatedBlog) => {
   };
 };
 
+export const addCommentBlog = (blogToBeUpdated, newComment) => {
+  return async (dispatch) => {
+    const comments = blogToBeUpdated.comments.concat(newComment);
+    const newBlog = { ...blogToBeUpdated, comments };
+    await blogService.put(newBlog);
+    const blogList = await blogService.getAll();
+    dispatch(setBlogs(blogList.data));
+  };
+};
+
 export default blogSlice.reducer;

@@ -29,6 +29,16 @@ export const updateMessage = (blogTitle) => {
   };
 };
 
+export const commentMessage = (comment) => {
+  return {
+    type: "SET_NOTIFICATION",
+    payload: {
+      text: `you added a comment "${comment}"`,
+      color: "green",
+    },
+  };
+};
+
 export const removeBlogMessage = (blog) => {
   return {
     type: "SET_NOTIFICATION",
