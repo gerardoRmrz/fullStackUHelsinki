@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { getUsersList } from "./reducers/usersListReducer";
 import LoginForm from "./components/LoginForm";
 import BlogList from "./components/BlogList";
 import BlogById from "./components/BlogById";
-import styled from "styled-components";
-import Notification from "./components/Notification";
 import NewBlogsForm from "./components/NewBlogsForm";
-import UserName from "./components/UserName";
+import NavBar from "./components/NavBar";
 import Toggable from "./components/Toggable";
 import Users from "./components/Users";
 import UserById from "./components/UserById";
+import Home from "./components/Home";
 
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { getUserInfo } from "./reducers/userReducer";
@@ -60,28 +59,15 @@ const App = () => {
     </Toggable>
   );
 
-  const header = (user) => {
-    if (!user) {
-      return null;
-    }
-    return (
-      <>
-        <Link to={"/"}>blogs</Link> <Link to={"/users"}>users</Link>{" "}
-        <UserName />
-      </>
-    );
-  };
-
   return (
     <Router>
       <div>
-        {header(user)}
-        <StyledH1>Blogs</StyledH1>
-        <Notification />
+        {user ? <NavBar /> : null}
         {user === null && loginForm()}
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route
-            path="/"
+            path="/blogs"
             element={<BlogList user={user} newBlogsForm={newBlogsForm} />}
           />
           <Route path="/users" element={<Users />}></Route>
@@ -94,11 +80,3 @@ const App = () => {
 };
 
 export default App;
-
-const StyledH1 = styled.h1`
-  font-size: 3rem;
-  color: green;
-`;
-const StyledButton = styled.button`
-  font-size: 1.5rem;
-`;

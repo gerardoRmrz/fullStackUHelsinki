@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import { StyledUserLi, StyledH2, StyledH3 } from "../styles/headersStyles";
+
 const UserById = () => {
   const id = useParams().id;
   const usersList = useSelector((state) => state.usersList);
@@ -11,7 +14,7 @@ const UserById = () => {
     return (
       <ul>
         {blogUser.map((blog, index) => (
-          <li key={index}> {blog.title}</li>
+          <StyledUserLi key={index}> {blog.title}</StyledUserLi>
         ))}
       </ul>
     );
@@ -19,8 +22,8 @@ const UserById = () => {
 
   return (
     <>
-      <h2>{userInfo?.name}</h2>
-      <h3>added blogs</h3>
+      <StyledH2>{userInfo?.name}</StyledH2>
+      <StyledH3>added blogs</StyledH3>
       {userBlogList()}
     </>
   );

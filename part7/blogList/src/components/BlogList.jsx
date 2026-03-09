@@ -10,6 +10,7 @@ import {
 } from "../reducers/notificationReducer";
 
 import { voteBlog } from "../reducers/blogsReducer";
+import { StyledH1 } from "../styles/headersStyles";
 
 const BlogList = (props) => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const BlogList = (props) => {
 
   return (
     <StyledDiv>
+      <StyledH1>Blogs</StyledH1>
       {props.newBlogsForm()}
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)

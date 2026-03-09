@@ -11,6 +11,8 @@ import {
 
 import { clearBlog } from "../reducers/blogsReducer";
 
+import { StyledBlogDiv } from "../styles/headersStyles";
+
 const Blog = (props) => {
   const dispatch = useDispatch();
 
@@ -38,46 +40,13 @@ const Blog = (props) => {
   };
 
   return (
-    <StyledDiv className="blog">
+    <StyledBlogDiv className="blog">
       <div id={props.id}>
         <Link to={`/blogs/${props.id}`}>{props.blog.title}</Link>{" "}
         <strong>{props.blog.author}</strong>
       </div>
-    </StyledDiv>
+    </StyledBlogDiv>
   );
 };
 
 export default Blog;
-
-const StyledButton = styled.button`
-  font-size: 0.9rem;
-  border-radius: 5px;
-  &:hover {
-    background-color: darkgray;
-  }
-  &:active {
-    background-color: #004085;
-    color: white;
-    transform: translateY(1px);
-  }
-`;
-const RemoveButton = styled.button`
-  font-size: 0.9rem;
-  background-color: cyan;
-  border-radius: 5px;
-  &:hover {
-    background-color: blue;
-    color: white;
-  }
-  &:active {
-    background-color: #004085;
-    color: white;
-    transform: translateY(1px);
-  }
-`;
-const StyledDiv = styled.div`
-  font-size: 1.5rem;
-  border-style: solid;
-  padding: 5px;
-  margin: 10px;
-`;

@@ -1,6 +1,4 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
-
 import { useDispatch } from "react-redux";
 
 import {
@@ -10,6 +8,8 @@ import {
 } from "../reducers/notificationReducer";
 
 import { appendBlog } from "../reducers/blogsReducer";
+
+import { StyledButton } from "../styles/buttonStyles";
 
 const NewBlogsForm = (props) => {
   const dispatch = useDispatch();
@@ -47,16 +47,6 @@ const NewBlogsForm = (props) => {
   const inputStyle = {
     fontSize: "1.5rem",
     margin: "15px",
-  };
-
-  const buttonStyle = {
-    fontSize: "1.5rem",
-    marginLeft: "10px",
-    width: "100px",
-  };
-
-  const hoverStyle = {
-    backgroundColor: "darkgray",
   };
 
   if (!props.handleSubmit) {
@@ -106,18 +96,15 @@ const NewBlogsForm = (props) => {
             props.setNewBlog((prevBlog) => ({ ...prevBlog, url: target.value }))
           }
         ></input>
-        <button
+        <StyledButton
           type="submit"
-          style={
-            createIsHovered ? { ...buttonStyle, ...hoverStyle } : buttonStyle
-          }
           onMouseEnter={() => setCreateIsHovered(true)}
           onMouseLeave={() => setCreateIsHovered(false)}
           id="newBlogSubmitButton"
           data-testid="newBlogSubmitButton"
         >
           create
-        </button>
+        </StyledButton>
       </form>
     </>
   );

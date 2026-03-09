@@ -1,12 +1,21 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Users = () => {
-  const dispatch = useDispatch();
+import {
+  StyledH1,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+  StyledTable,
+} from "../styles/headersStyles";
 
+const Users = () => {
   const usersList = useSelector((state) => state.usersList);
   const blogList = useSelector((state) => state.blogs);
+
+  const padding = {
+    padding: 5,
+  };
 
   const countBlogPerUser = () => {
     const result = [];
@@ -15,39 +24,33 @@ const Users = () => {
       result.push([user, blogUser]);
     }
     return (
-      <table style={{ textAlign: "left" }}>
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">blogs created</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result.map((item, index) => (
-            <tr key={index}>
-              <td>
-                <Link style={padding} to={`/users/${item[0].id}`}>
-                  {item[0].name}
-                </Link>
-              </td>
-              <td>{item[1].length}</td>
+      <>
+        <StyledH1>Users</StyledH1>
+        <StyledTable style={{ textAlign: "left" }}>
+          <thead>
+            <tr>
+              <StyledTh scope="col"></StyledTh>
+              <StyledTh scope="col">blogs created</StyledTh>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {result.map((item, index) => (
+              <StyledTr key={index}>
+                <StyledTd>
+                  <Link style={padding} to={`/users/${item[0].id}`}>
+                    {item[0].name}
+                  </Link>
+                </StyledTd>
+                <StyledTd>{item[1].length}</StyledTd>
+              </StyledTr>
+            ))}
+          </tbody>
+        </StyledTable>
+      </>
     );
   };
 
-  const padding = {
-    padding: 5,
-  };
-
-  return (
-    <>
-      <h2>Users</h2>
-      {usersList ? countBlogPerUser() : null}
-    </>
-  );
+  return <>{usersList ? countBlogPerUser() : null}</>;
 };
 
 export default Users;

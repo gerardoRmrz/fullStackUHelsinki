@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -8,10 +7,18 @@ import {
   clearMessage,
   errorMessage,
 } from "../reducers/notificationReducer";
-
 import { addCommentBlog } from "../reducers/blogsReducer";
-
 import { voteBlog } from "../reducers/blogsReducer";
+
+import { StyledButton } from "../styles/buttonStyles";
+import {
+  StyledH2,
+  StyledH3,
+  StyledInput,
+  StyledUserLi,
+  StyledP,
+  StyledA,
+} from "../styles/headersStyles";
 
 const BlogById = () => {
   const dispatch = useDispatch();
@@ -49,7 +56,7 @@ const BlogById = () => {
     return (
       <ul>
         {blog.comments.map((comment, index) => (
-          <li key={index}>{comment}</li>
+          <StyledUserLi key={index}>{comment}</StyledUserLi>
         ))}
       </ul>
     );
@@ -59,7 +66,6 @@ const BlogById = () => {
     const handleClick = (event) => {
       event.preventDefault();
       const newComment = event.target.comment.value;
-      console.log("Click comment button", newComment);
       try {
         dispatch(addCommentBlog(blog, newComment));
         dispatch(commentMessage(newComment));
@@ -76,26 +82,26 @@ const BlogById = () => {
     };
     return (
       <form onSubmit={(event) => handleClick(event)}>
-        <input type="text" name="comment"></input>
-        <button type="submit">add comments</button>
+        <StyledInput type="text" name="comment"></StyledInput>
+        <StyledButton type="submit">add comments</StyledButton>
       </form>
     );
   };
 
   return (
     <>
-      <h2>
+      <StyledH2>
         {blog.title} by {blog.author}
-      </h2>
-      <a href={blog.url}>{blog.url}</a>
-      <p>
+      </StyledH2>
+      <StyledA href={blog.url}>{blog.url}</StyledA>
+      <StyledP>
         {blog.likes} likes {"   "}
         <StyledButton type="button" onClick={() => likesHandler(blog)}>
           like
         </StyledButton>
-      </p>
-      <p>added by {blogOwner.name}</p>
-      <h3>comments</h3>
+      </StyledP>
+      <StyledP>added by {blogOwner.name}</StyledP>
+      <StyledH3>comments</StyledH3>
       {commentInput()}
       {commentsList()}
     </>
@@ -103,16 +109,3 @@ const BlogById = () => {
 };
 
 export default BlogById;
-
-const StyledButton = styled.button`
-  font-size: 0.9rem;
-  border-radius: 5px;
-  &:hover {
-    background-color: darkgray;
-  }
-  &:active {
-    background-color: #004085;
-    color: white;
-    transform: translateY(1px);
-  }
-`;

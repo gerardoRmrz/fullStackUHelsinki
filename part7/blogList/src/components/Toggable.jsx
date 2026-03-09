@@ -1,6 +1,7 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { Children, isValidElement, cloneElement } from "react";
+
+import { StyledButton } from "../styles/buttonStyles";
 
 const Toggable = (props) => {
   const [visible, setVisible] = useState(false);
@@ -44,15 +45,3 @@ const Toggable = (props) => {
 };
 
 export default Toggable;
-
-const StyledButton = styled.button`
-  font-size: 1.5rem;
-  &:hover {
-    background-color: darkgray;
-  }
-  &:active {
-    background-color: #004085;
-    color: white;
-    transform: translateY(1px);
-  }
-`;
