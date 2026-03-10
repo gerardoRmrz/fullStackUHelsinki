@@ -9,12 +9,15 @@ import {
   StyledTable,
 } from "../styles/headersStyles";
 
+import { linkStyle as lstyle } from "../styles/darkMode";
+
 const Users = () => {
   const usersList = useSelector((state) => state.usersList);
   const blogList = useSelector((state) => state.blogs);
 
-  const padding = {
+  const linkStyle = {
     padding: 5,
+    ...lstyle,
   };
 
   const countBlogPerUser = () => {
@@ -37,7 +40,7 @@ const Users = () => {
             {result.map((item, index) => (
               <StyledTr key={index}>
                 <StyledTd>
-                  <Link style={padding} to={`/users/${item[0].id}`}>
+                  <Link style={linkStyle} to={`/users/${item[0].id}`}>
                     {item[0].name}
                   </Link>
                 </StyledTd>

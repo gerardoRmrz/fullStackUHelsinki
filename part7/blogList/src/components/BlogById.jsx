@@ -15,7 +15,7 @@ import {
   StyledH2,
   StyledH3,
   StyledInput,
-  StyledUserLi,
+  StyledComments,
   StyledP,
   StyledA,
 } from "../styles/headersStyles";
@@ -56,7 +56,7 @@ const BlogById = () => {
     return (
       <ul>
         {blog.comments.map((comment, index) => (
-          <StyledUserLi key={index}>{comment}</StyledUserLi>
+          <StyledComments key={index}>{comment}</StyledComments>
         ))}
       </ul>
     );

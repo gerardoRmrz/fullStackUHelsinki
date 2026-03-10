@@ -6,7 +6,10 @@ import { StyledButton } from "../styles/buttonStyles";
 const Toggable = (props) => {
   const [visible, setVisible] = useState(false);
 
-  const hidenWhenVisible = { display: visible ? "none" : "" };
+  const hidenWhenVisible = {
+    display: visible ? "none" : "",
+    marginBottom: "30px",
+  };
   const showWhenVisible = { display: visible ? "" : "none" };
 
   const toggleVisibility = () => {

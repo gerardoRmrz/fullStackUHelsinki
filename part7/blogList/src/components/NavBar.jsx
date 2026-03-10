@@ -7,6 +7,7 @@ import Notification from "./Notification";
 
 import { StyledButton } from "../styles/buttonStyles";
 import { StyledPNav } from "../styles/headersStyles";
+import { linkStyle } from "../styles/darkMode";
 
 const NavBar = (props) => {
   const dispatch = useDispatch();
@@ -21,8 +22,13 @@ const NavBar = (props) => {
   return (
     <>
       <StyledPNav>
-        <Link to={"/blogs"}>blogs</Link> <Link to={"/users"}>users</Link>{" "}
-        <strong>{user?.name} </strong> logged in{" "}
+        <Link style={linkStyle} to={"/blogs"}>
+          blogs
+        </Link>{" "}
+        <Link style={linkStyle} to={"/users"}>
+          users
+        </Link>{" "}
+        <strong>{user?.name} </strong> logged in <br></br>
         <StyledButton type="button" onClick={handleLogOut}>
           logout
         </StyledButton>

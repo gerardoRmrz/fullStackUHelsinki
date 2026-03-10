@@ -15,6 +15,8 @@ import Home from "./components/Home";
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { getUserInfo } from "./reducers/userReducer";
 
+import { StyledDiv } from "./styles/darkMode";
+
 const App = () => {
   const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
@@ -61,11 +63,11 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <StyledDiv>
         {user ? <NavBar /> : null}
         {user === null && loginForm()}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} />} />
           <Route
             path="/blogs"
             element={<BlogList user={user} newBlogsForm={newBlogsForm} />}
@@ -74,7 +76,7 @@ const App = () => {
           <Route path="/users/:id" element={<UserById />} />
           <Route path="/blogs/:id" element={<BlogById />} />
         </Routes>
-      </div>
+      </StyledDiv>
     </Router>
   );
 };

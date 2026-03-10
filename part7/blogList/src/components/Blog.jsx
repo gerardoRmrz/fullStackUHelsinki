@@ -12,6 +12,7 @@ import {
 import { clearBlog } from "../reducers/blogsReducer";
 
 import { StyledBlogDiv } from "../styles/headersStyles";
+import { linkStyle } from "../styles/darkMode";
 
 const Blog = (props) => {
   const dispatch = useDispatch();
@@ -42,7 +43,9 @@ const Blog = (props) => {
   return (
     <StyledBlogDiv className="blog">
       <div id={props.id}>
-        <Link to={`/blogs/${props.id}`}>{props.blog.title}</Link>{" "}
+        <Link style={linkStyle} to={`/blogs/${props.id}`}>
+          {props.blog.title}
+        </Link>{" "}
         <strong>{props.blog.author}</strong>
       </div>
     </StyledBlogDiv>

@@ -1,8 +1,14 @@
-const Home = () => {
+import { StyledH1 } from "../styles/headersStyles";
+
+const Home = ({ user }) => {
   return (
     <div>
       {" "}
-      <h1>HOME</h1>{" "}
+      {user ? (
+        <StyledH1>WELCOME {user.name}!!</StyledH1>
+      ) : (
+        <StyledH1>PLEASE LOGIN</StyledH1>
+      )}{" "}
     </div>
   );
 };
