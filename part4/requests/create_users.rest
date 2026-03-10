@@ -1,4 +1,4 @@
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3001/api/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -7,9 +7,20 @@ Content-Type: application/json
   "password": "123456789"
 }
 
-###
+####
 
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "marAz",
+  "name": "Mariano Azuela",
+  "password": "jsdjnegs"
+}
+
+#####
+
+POST http://localhost:3001/api/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -19,7 +30,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3003/api/users HTTP/1.1
+POST http://localhost:3001/api/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -28,3 +39,54 @@ Content-Type: application/json
   "password": "nicmaq_12456"
 }
 
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{ "name": "Gibran Khalil Gibran",
+    "username": "gibKhagi",
+    "password": "kam36c.l@"
+}
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Akira Kurosawa",
+  "username": "akirKu",
+  "password": "2947sjvaop"
+}
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Emiliano Zapata",
+  "username": "emiZap",
+  "password": "ñ,xcbn623"
+}
+
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "William Shakespeare",
+  "username": "willShak",
+  "password": "9784hau293"
+}
+
+
+###
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Robert Kappa",
+  "username": "robKap",
+  "password": "28jsghas0"
+}
+      

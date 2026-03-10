@@ -1,11 +1,12 @@
 
-POST http://localhost:3003/api/blogs HTTP/1.1
+POST http://localhost:3001/api/blogs HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hckF6IiwiaWQiOiI2OTU0M2YwNDM1MTE3NmQyMjMwODA1YzEiLCJpYXQiOjE3Njc3MTkwMzZ9.i_S417y3GL_MT38HuzvW8ybQB0BPbvGBZ9FmtfjdIWo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5pY21hcSIsImlkIjoiNjlhYTE0YzE0YTMwMmIwZjIxMzY3NDc1IiwiaWF0IjoxNzcyODk5MzU0fQ.vMhDnfTuFsYQXo1QXSy0tGzKRkjDqmRWug4tbTHZtYo
 
 {
   "title": "Testing an app with login",
   "author": "Who R You",
   "url": "https://some.place.com",
-  "likes": 5
+  "likes": 5,
+  "comments": ["comment 1", "comment 2"]
 }

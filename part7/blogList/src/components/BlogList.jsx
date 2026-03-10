@@ -1,0 +1,64 @@
+import styled from "styled-components";
+import Blog from "./Blog";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  errorMessage,
+  clearMessage,
+  updateMessage,
+} from "../reducers/notificationReducer";
+
+import { voteBlog } from "../reducers/blogsReducer";
+import { StyledH1 } from "../styles/headersStyles";
+
+const BlogList = (props) => {
+  const dispatch = useDispatch();
+
+  const blogs = useSelector((state) => state.blogs);
+
+  const likesHandler = async (blog) => {
+    try {
+      const updatedBlog = { ...blog };
+
+      updatedBlog.likes += 1;
+
+      dispatch(voteBlog(updatedBlog));
+      dispatch(updateMessage(updatedBlog.title));
+
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, 5000);
+    } catch (error) {
+      dispatch(errorMessage(error.message));
+      setTimeout(() => {
+        dispatch(clearMessage());
+      }, 5000);
+    }
+  };
+
+  return (
+    <StyledDiv>
+      <StyledH1>Blogs</StyledH1>
+      {props.newBlogsForm()}
+      {[...blogs]
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <Blog
+            key={blog.id}
+            id={blog.id}
+            blog={blog}
+            setBlogs={props.setBlogs}
+            user={props.user}
+            likesHandler={likesHandler}
+          />
+        ))}
+    </StyledDiv>
+  );
+};
+
+export default BlogList;
+
+const StyledDiv = styled.div`
+  margin-top: 25px;
+`;
