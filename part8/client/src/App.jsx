@@ -22,14 +22,13 @@ const App = () => {
         <button onClick={() => setPage("add")}>add book</button>
       </div>
 
-      <Authors
-        show={page === "authors"}
-        authors={authorsResult.data.allAuthors}
-      />
+      {page === "authors" ? (
+        <Authors authors={authorsResult.data.allAuthors} />
+      ) : null}
 
-      <Books show={page === "books"} books={booksResult.data.allBooks} />
+      {page === "books" ? <Books books={booksResult.data.allBooks} /> : null}
 
-      <NewBook show={page === "add"} />
+      {page === "add" ? <NewBook /> : null}
     </div>
   );
 };
