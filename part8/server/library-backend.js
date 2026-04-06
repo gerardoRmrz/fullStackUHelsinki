@@ -130,7 +130,7 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      if (!args) {
+      if (Object.keys(args).length === 0) {
         return books;
       }
       let newBooks = [...books];
