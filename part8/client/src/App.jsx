@@ -14,7 +14,6 @@ const App = () => {
   if (authorsResult.loading || booksResult.loading) {
     return <div>loading...</div>;
   }
-  //console.log(booksResult.data);
   return (
     <div>
       <div>
