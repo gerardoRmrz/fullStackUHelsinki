@@ -1,9 +1,29 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const { v1: uuid } = require("uuid");
+const { v1: uuid } = require("uuid"); // SÓLO SE REQUIERE CUANDO LA BASE DE DATOS NO GESTIONA EL ID
 const { GraphQLError } = require("graphql");
 
-let authors = [
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+
+const Author = require("./models/author");
+const Book = require("./models/book");
+
+require("dotenv").config();
+const MONGODB_URI = process.env.MONGODB_URI;
+
+console.log("connecting to ", MONGODB_URI);
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connection to MongoDB", error.message);
+  });
+
+/* let authors = [
   {
     name: "Robert Martin",
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -28,14 +48,14 @@ let authors = [
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
   },
 ];
-
+ */
 /*
  * Spanish:
  * Podría tener más sentido asociar un libro con su autor almacenando la id del autor en el contexto del libro en lugar del nombre del autor
  * Sin embargo, por simplicidad, almacenaremos el nombre del autor en conexión con el libro
  */
 
-let books = [
+/* let books = [
   {
     title: "Clean Code",
     published: 2008,
@@ -86,13 +106,14 @@ let books = [
     genres: ["classic", "revolution"],
   },
 ];
+ */
 
 const typeDefs = `
   type Book {
     title: String!
     published: Int
-    author: String
-    genres: [String]
+    author: Author!
+    genres: [String!]!
     id: ID!
   }
   type Author {
@@ -127,8 +148,8 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
+    bookCount: async () => Book.collection.countDocuments(),
+    authorCount: () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
       if (Object.keys(args).length === 0) {
         return books;
@@ -147,45 +168,31 @@ const resolvers = {
         return { title: b.title, author: b.author };
       });
     },
-    allAuthors: () => {
-      const result = [];
-      for (const author of authors) {
-        const obj = {
-          name: author.name,
-          born: author.born,
-          bookCount: books.filter((b) => b.author === author.name).length,
-        };
-        result.push(obj);
-      }
-      return result;
+    allAuthors: async () => {
+      return Author.find({});
     },
   },
   Mutation: {
-    addBook: (root, args) => {
-      if (!authors.map((a) => a.name).includes(args.author)) {
-        const author = { name: args.author, id: uuid() };
-        authors = authors.concat(author);
-      }
+    addBook: async (root, args) => {
+      let author = await Author.findOne({ name: args.author });
 
-      const book = {
-        title: args.title,
-        author: args.author,
-        published: args.published,
-        genres: args.genres,
-        id: uuid(),
-      };
-      books = books.concat(book);
+      if (!author) {
+        author = new Author({ name: args.author, born: args.born });
+        await author.save();
+      }
+      const book = new Book({ ...args, author: author });
+      await book.save();
       return book;
     },
-    editAuthor: (root, args) => {
+    editAuthor: async (root, args) => {
       console.log({ ...args });
-      const author = authors.find((a) => a.name === args.name);
+      const author = await Author.findOne({ name: args.name });
       if (!author) {
         return null;
       }
-      const modifiedAuthor = { ...author, born: args.setBorn };
-      authors = authors.map((a) => (a.name === args.name ? modifiedAuthor : a));
-      return modifiedAuthor;
+      author.born = args.setBorn;
+      await author.save();
+      return author;
     },
   },
 };
