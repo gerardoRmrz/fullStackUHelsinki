@@ -1,3 +1,4 @@
+console.clear();
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { v1: uuid } = require("uuid"); // SÓLO SE REQUIERE CUANDO LA BASE DE DATOS NO GESTIONA EL ID
@@ -109,16 +110,16 @@ mongoose
  */
 
 const typeDefs = `
+  type Author {
+    name: String!
+    born: Int
+    id: ID!
+  }  
   type Book {
     title: String!
     published: Int
     author: Author!
     genres: [String!]!
-    id: ID!
-  }
-  type Author {
-    name: String!
-    born: Int
     id: ID!
   }
   type AllAuthors {
@@ -129,7 +130,7 @@ const typeDefs = `
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre: String): [Book!]!
+    allBooks(author: String, genre: [String]): [Book!]!
     allAuthors: [AllAuthors!]!
   }
   type Mutation {
@@ -150,23 +151,23 @@ const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
+    allBooks: async (root, args) => {
       if (Object.keys(args).length === 0) {
-        return books;
+        return Book.find({});
       }
-      let newBooks = [...books];
+
       if (args.genre) {
-        newBooks = newBooks.filter((b) =>
-          b.genres.some((genre) => genre === args.genre),
-        );
+        const allBooksGenre = Book.find({ genres: { $all: args.genre } });
+        return allBooksGenre;
       }
+      /*  
       if (args.author) {
         newBooks = newBooks.filter((b) => b.author === args.author);
       }
 
       return newBooks.map((b) => {
         return { title: b.title, author: b.author };
-      });
+      }); */
     },
     allAuthors: async () => {
       return Author.find({});
@@ -185,7 +186,6 @@ const resolvers = {
       return book;
     },
     editAuthor: async (root, args) => {
-      console.log({ ...args });
       const author = await Author.findOne({ name: args.name });
       if (!author) {
         return null;
