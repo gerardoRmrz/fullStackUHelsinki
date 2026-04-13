@@ -1,14 +1,16 @@
 console.clear();
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
-const { v1: uuid } = require("uuid"); // SÓLO SE REQUIERE CUANDO LA BASE DE DATOS NO GESTIONA EL ID
+//const { v1: uuid } = require("uuid"); // SÓLO SE REQUIERE CUANDO LA BASE DE DATOS NO GESTIONA EL ID
 const { GraphQLError } = require("graphql");
+const { UserInputError } = require("apollo-server-errors");
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
 const Author = require("./models/author");
 const Book = require("./models/book");
+const { argsToArgsConfig } = require("graphql/type/definition");
 
 require("dotenv").config();
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -175,6 +177,16 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
+      if (args.author.length <= 4) {
+        throw new GraphQLError("Author name too short, must be > 4", {
+          extensions: { code: "BAD_USER_INPUT" },
+        });
+      }
+      if (args.title.length <= 4) {
+        throw new GraphQLError("Title name too short, must be > 4", {
+          extensions: { code: "BAD_USER_INPUT " },
+        });
+      }
       let author = await Author.findOne({ name: args.author });
 
       if (!author) {
