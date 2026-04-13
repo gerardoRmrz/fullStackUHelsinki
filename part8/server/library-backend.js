@@ -4,7 +4,7 @@ const { startStandaloneServer } = require("@apollo/server/standalone");
 //const { v1: uuid } = require("uuid"); // SÓLO SE REQUIERE CUANDO LA BASE DE DATOS NO GESTIONA EL ID
 const { GraphQLError } = require("graphql");
 const { UserInputError } = require("apollo-server-errors");
-const { jwt } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
@@ -187,6 +187,7 @@ const resolvers = {
       return Author.find({});
     },
     me: (root, args, context) => {
+      console.log({ ...context });
       return context.currentUser;
     },
   },
@@ -240,7 +241,10 @@ const resolvers = {
       return author;
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username });
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
 
       return user.save().catch((error) => {
         throw new GraphQLError("Creating the user failed", {
@@ -254,6 +258,7 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
+      console.log(user);
 
       if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
@@ -279,6 +284,15 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
+  context: async ({ req, res }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.startsWith("Bearer ")) {
+      const decodedToken = jwt.verify(auth.substring(7), process.env.SECRET);
+      const currentUser = await User.findById(decodedToken.id);
+
+      return { currentUser };
+    }
+  },
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
