@@ -20,8 +20,9 @@ const NewBook = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-
-    addBook({ variables: { title, published, author, genres } });
+    addBook({
+      variables: { title, published, author, genres },
+    });
 
     setTitle("");
     setPublished("");

@@ -14,7 +14,7 @@ const App = () => {
   const authorsResult = useQuery(ALL_AUTHORS);
   const booksResult = useQuery(ALL_BOOKS);
   const client = useApolloClient();
-  console.log({ ...booksResult });
+
   const logout = () => {
     setToken(null);
     localStorage.clear();
@@ -40,6 +40,7 @@ const App = () => {
         <button onClick={() => setPage("authors")}>authors</button>
         <button onClick={() => setPage("books")}>books</button>
         <button onClick={() => setPage("add")}>add book</button>
+        {token ? <button onClick={logout}>logout</button> : null}
       </div>
 
       {page === "authors" ? (

@@ -200,6 +200,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args, context) => {
+      console.log({ ...args });
       const currentUser = context.currentUser;
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {
@@ -209,12 +210,12 @@ const resolvers = {
         });
       }
 
-      if (args.author.length <= 4) {
+      if (args.author.length <= 3) {
         throw new GraphQLError("Author name too short, must be > 4", {
           extensions: { code: "BAD_USER_INPUT" },
         });
       }
-      if (args.title.length <= 4) {
+      if (args.title.length <= 3) {
         throw new GraphQLError("Title name too short, must be > 4", {
           extensions: { code: "BAD_USER_INPUT " },
         });
@@ -225,7 +226,8 @@ const resolvers = {
         author = new Author({ name: args.author, born: args.born });
         await author.save();
       }
-      const book = new Book({ ...args, author: author });
+      console.log({ ...author });
+      const book = new Book({ ...args, author: author._id });
       await book.save();
       return book;
     },
