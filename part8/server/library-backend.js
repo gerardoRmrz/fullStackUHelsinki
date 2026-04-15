@@ -12,7 +12,6 @@ mongoose.set("strictQuery", false);
 const Author = require("./models/author");
 const Book = require("./models/book");
 const User = require("./models/user");
-const { argsToArgsConfig } = require("graphql/type/definition");
 
 require("dotenv").config();
 
@@ -124,7 +123,7 @@ const typeDefs = `
     value: String  
   }
   type Author {
-    name: String!
+    name: String
     born: Int
     id: ID!
   }  
@@ -138,7 +137,6 @@ const typeDefs = `
   type AllAuthors {
       name: String!
       born: Int
-      bookCount: Int!
     }
   type Query {
     bookCount: Int!
@@ -167,19 +165,29 @@ const typeDefs = `
       password: String!
     ): Token
   }
+
 `;
 
 const resolvers = {
+  Book: {
+    author: async (root) => {
+      const result = await Author.findById(root.author.toString());
+      return {
+        name: result.name,
+        born: result.born,
+      };
+    },
+  },
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (Object.keys(args).length === 0) {
-        return Book.find({});
+        return await Book.find({});
       }
 
       if (args.genre) {
-        const allBooksGenre = Book.find({ genres: { $all: args.genre } });
+        const allBooksGenre = await Book.find({ genres: { $all: args.genre } });
         return allBooksGenre;
       }
     },
@@ -187,7 +195,6 @@ const resolvers = {
       return Author.find({});
     },
     me: (root, args, context) => {
-      console.log({ ...context });
       return context.currentUser;
     },
   },
@@ -258,8 +265,6 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });
-      console.log(user);
-
       if (!user || args.password !== "secret") {
         throw new GraphQLError("wrong credentials", {
           extensions: {
@@ -289,7 +294,6 @@ startStandaloneServer(server, {
     if (auth && auth.startsWith("Bearer ")) {
       const decodedToken = jwt.verify(auth.substring(7), process.env.SECRET);
       const currentUser = await User.findById(decodedToken.id);
-
       return { currentUser };
     }
   },

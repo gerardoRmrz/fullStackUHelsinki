@@ -1,10 +1,9 @@
 const Books = (props) => {
   const books = props.books;
-
+  //console.log(books);
   return (
     <div>
       <h2>books</h2>
-
       <table>
         <tbody>
           <tr>
@@ -15,7 +14,7 @@ const Books = (props) => {
           {books.map((a, index) => (
             <tr key={index}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           ))}
