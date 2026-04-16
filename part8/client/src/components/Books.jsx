@@ -1,9 +1,15 @@
+import { useState } from "react";
+import FiltroXGenero from "./FIltroXGenero";
+
 const Books = (props) => {
   const books = props.books;
-  //console.log(books);
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
   return (
     <div>
-      <h2>books</h2>
+      <h3>Filter by genre</h3>
+      <FiltroXGenero books={books} setFilteredBooks={setFilteredBooks} />
+      <h2>Books</h2>
       <table>
         <tbody>
           <tr>
@@ -11,7 +17,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a, index) => (
+          {filteredBooks.map((a, index) => (
             <tr key={index}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
