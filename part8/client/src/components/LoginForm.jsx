@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMutation } from "@apollo/client/react";
 import { LOGIN } from "../queries/queries";
 
-const LoginForm = ({ setError, setToken }) => {
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("secret");
-
+const LoginForm = ({ setError, setToken, username, setUserName, password }) => {
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
       setError(error.graphQLErrors[0].message);
@@ -14,9 +11,9 @@ const LoginForm = ({ setError, setToken }) => {
 
   useEffect(() => {
     if (result.data) {
-      const token = result.data.login.value;
-      setToken(token);
-      localStorage.setItem("phonenumbers-user-token", token);
+      const tokenData = result.data.login.value;
+      setToken(tokenData);
+      localStorage.setItem("phonenumbers-user-token", tokenData);
     }
   }, [result.data]);
 
@@ -24,6 +21,7 @@ const LoginForm = ({ setError, setToken }) => {
     event.preventDefault();
     login({ variables: { username, password } });
   };
+
   return (
     <>
       <form onSubmit={submit}>
