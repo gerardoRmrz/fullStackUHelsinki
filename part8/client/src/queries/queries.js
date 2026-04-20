@@ -32,9 +32,23 @@ export const ALL_BOOKS = gql`
   }
 `;
 
-export const BOOKS_BY_GENRE = gql`
+export const RECOMMENDED = gql`
   query {
     recommendedBooks {
+      title
+      published
+      author {
+        name
+        born
+      }
+      genres
+    }
+  }
+`;
+
+export const FILTER_BY_GENRE = gql`
+  query filterByGenre($genre: String!) {
+    filterByGenre(genre: $genre) {
       title
       published
       author {

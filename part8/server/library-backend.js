@@ -144,6 +144,7 @@ const typeDefs = `
     allBooks(author: String, genre: [String]): [Book!]!
     allAuthors: [AllAuthors!]!
     recommendedBooks: [Book]
+    filterByGenre(genre: String!): [Book]
     me: User
   }
   type Mutation {
@@ -207,6 +208,9 @@ const resolvers = {
       return await Book.find({
         genres: { $all: currentUser.favoriteGenre },
       });
+    },
+    filterByGenre: async (root, args) => {
+      return Book.find({ genres: { $all: args.genre } });
     },
     me: (root, _, context) => {
       return context.currentUser;

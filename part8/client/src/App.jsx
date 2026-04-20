@@ -8,7 +8,7 @@ import Recommend from "./components/Recommend";
 import {
   ALL_AUTHORS,
   ALL_BOOKS,
-  BOOKS_BY_GENRE,
+  RECOMMENDED,
   CURRENT_USER,
 } from "./queries/queries";
 import LoginForm from "./components/LoginForm";
@@ -25,7 +25,7 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS);
   const booksResult = useQuery(ALL_BOOKS);
-  const [getBooksByGenre, booksByGenreData] = useLazyQuery(BOOKS_BY_GENRE);
+  const [getBooksByGenre, booksByGenreData] = useLazyQuery(RECOMMENDED);
 
   const [getCurrentUser, { calledUserQ, loadedUserQ, resultCurrentUser }] =
     useLazyQuery(CURRENT_USER);
@@ -73,7 +73,7 @@ const App = () => {
       </div>
     );
   }
-
+  console.log("currentUser: ", currentUser);
   return (
     <div>
       <div>

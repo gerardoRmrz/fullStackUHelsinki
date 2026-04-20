@@ -7,7 +7,6 @@ const Books = (props) => {
 
   return (
     <div>
-      <h3>Filter by genre</h3>
       <FiltroXGenero books={books} setFilteredBooks={setFilteredBooks} />
       <h2>Books</h2>
       <table>
