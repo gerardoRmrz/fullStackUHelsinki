@@ -1,3 +1,4 @@
+const { GraphQLError } = require("graphql");
 const { PubSub } = require("graphql-subscriptions");
 const User = require("../models/user");
 const Author = require("../models/author");
@@ -22,7 +23,7 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (Object.keys(args).length === 0) {
-        return await Book.find({});
+        return await Book.find({}).populate("author");
       }
 
       if (args.genre) {
@@ -49,13 +50,15 @@ const resolvers = {
     filterByGenre: async (root, args) => {
       return Book.find({ genres: { $all: args.genre } });
     },
-    me: (root, _, context) => {
+    me: async (root, _, context) => {
+      console.log("resolver me: ", { ...context });
       return context.currentUser;
     },
   },
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser;
+      //console.log("addBook: ", context);
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {
           extensions: {
@@ -82,8 +85,6 @@ const resolvers = {
         await author.save();
       }
 
-      console.log("AddBook: ", author);
-
       const newBook = new Book({
         ...args,
         author: author._id,
@@ -93,7 +94,7 @@ const resolvers = {
 
       await newBook.populate("author");
 
-      console.log("newBook resolver : ", newBook);
+      // console.log("newBook resolver : ", newBook);
 
       pubSub.publish("BOOK_ADDED", {
         bookAdded: newBook,
@@ -149,7 +150,9 @@ const resolvers = {
         username: user.username,
         id: user.id,
       };
-      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) };
+      return {
+        value: jwt.sign(userForToken, process.env.JWT_SECRET),
+      };
     },
   },
   Subscription: {

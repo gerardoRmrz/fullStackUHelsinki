@@ -60,6 +60,20 @@ export const FILTER_BY_GENRE = gql`
   }
 `;
 
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      author {
+        name
+        born
+      }
+      title
+      published
+      genres
+    }
+  }
+`;
+
 export const ADD_BOOK = gql`
   mutation addBook(
     $title: String!

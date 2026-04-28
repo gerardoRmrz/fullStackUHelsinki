@@ -89,10 +89,10 @@ const startServer = async (port) => {
   await server.start();
   app.use(
     "/graphql",
-    express.json(),
     cors(),
+    express.json(),
     expressMiddleware(server, {
-      context: async ({ req }) => {
+      context: async ({ req, res }) => {
         const auth = req.headers.authorization;
         const currentUser = await getUserFromAuthHeader(auth);
         return { currentUser };

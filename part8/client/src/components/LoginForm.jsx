@@ -13,7 +13,7 @@ const LoginForm = ({ setError, setToken, username, setUserName, password }) => {
     if (result.data) {
       const tokenData = result.data.login.value;
       setToken(tokenData);
-      localStorage.setItem("phonenumbers-user-token", tokenData);
+      localStorage.setItem("books-user-token", tokenData);
     }
   }, [result.data]);
 

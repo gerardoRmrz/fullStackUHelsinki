@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { useApolloClient, useQuery, useLazyQuery } from "@apollo/client/react";
+import {
+  useApolloClient,
+  useQuery,
+  useLazyQuery,
+  useSubscription,
+} from "@apollo/client/react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -10,6 +15,7 @@ import {
   ALL_BOOKS,
   RECOMMENDED,
   CURRENT_USER,
+  BOOK_ADDED,
 } from "./queries/queries";
 import LoginForm from "./components/LoginForm";
 
@@ -25,26 +31,40 @@ const App = () => {
 
   const authorsResult = useQuery(ALL_AUTHORS);
   const booksResult = useQuery(ALL_BOOKS);
-  const [getBooksByGenre, booksByGenreData] = useLazyQuery(RECOMMENDED);
 
-  const [getCurrentUser, { calledUserQ, loadedUserQ, resultCurrentUser }] =
-    useLazyQuery(CURRENT_USER);
+  const [getBooksByGenre, booksByGenreData] = useLazyQuery(RECOMMENDED);
+  const [getCurrentUser, resultCurrentUser] = useLazyQuery(CURRENT_USER);
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log({ ...data.data });
+      window.alert(
+        `Se ha agregado el libro: ${data.data.bookAdded.title} to the list`,
+      );
+    },
+  });
 
   const client = useApolloClient();
 
   useEffect(() => {
+    getCurrentUser();
+    setCurrentUser(resultCurrentUser.data);
+    console.log(resultCurrentUser);
+  }, [token]);
+
+  useEffect(() => {
+    getCurrentUser();
     if (token && booksByGenreData.data) {
       setBooksByGenre(booksByGenreData.data.recommendedBooks);
-      setCurrentUser(resultCurrentUser);
     } else {
       console.log("========================");
     }
   }, [booksByGenreData]);
 
   const logout = () => {
-    localStorage.removeItem("token");
     setPage("authors");
     client.resetStore();
+    localStorage.removeItem("token");
     setToken(null);
     localStorage.clear();
   };
@@ -73,7 +93,7 @@ const App = () => {
       </div>
     );
   }
-  console.log("currentUser: ", currentUser);
+
   return (
     <div>
       <div>
@@ -88,7 +108,9 @@ const App = () => {
         <Authors authors={authorsResult.data.allAuthors} />
       ) : null}
 
-      {page === "books" ? <Books books={booksResult.data.allBooks} /> : null}
+      {page === "books" && booksResult.data ? (
+        <Books books={booksResult.data.allBooks} />
+      ) : null}
 
       {page === "add" ? <NewBook /> : null}
 
