@@ -35,21 +35,35 @@ const App = () => {
   const [getBooksByGenre, booksByGenreData] = useLazyQuery(RECOMMENDED);
   const [getCurrentUser, resultCurrentUser] = useLazyQuery(CURRENT_USER);
 
+  const client = useApolloClient();
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => {
+      return set.map((p) => p.id).includes(object.id);
+    };
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+  };
+
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log({ ...data.data });
+      const addedBook = data.data.bookAdded;
       window.alert(
         `Se ha agregado el libro: ${data.data.bookAdded.title} to the list`,
       );
+      updateCacheWith(addedBook);
     },
   });
-
-  const client = useApolloClient();
 
   useEffect(() => {
     getCurrentUser();
     setCurrentUser(resultCurrentUser.data);
-    console.log(resultCurrentUser);
+    getBooksByGenre();
   }, [token]);
 
   useEffect(() => {

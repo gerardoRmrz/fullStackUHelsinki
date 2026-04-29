@@ -43,15 +43,17 @@ const resolvers = {
           },
         });
       }
+
       return await Book.find({
         genres: { $all: currentUser.favoriteGenre },
-      });
+      }).populate("author");
     },
     filterByGenre: async (root, args) => {
-      return Book.find({ genres: { $all: args.genre } });
+      return await Book.find({ genres: { $all: args.genre } }).populate(
+        "author",
+      );
     },
     me: async (root, _, context) => {
-      console.log("resolver me: ", { ...context });
       return context.currentUser;
     },
   },

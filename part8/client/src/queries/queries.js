@@ -28,6 +28,7 @@ export const ALL_BOOKS = gql`
         born
       }
       genres
+      id
     }
   }
 `;
@@ -54,8 +55,10 @@ export const FILTER_BY_GENRE = gql`
       author {
         name
         born
+        id
       }
       genres
+      id
     }
   }
 `;
@@ -70,6 +73,7 @@ export const BOOK_ADDED = gql`
       title
       published
       genres
+      id
     }
   }
 `;
@@ -94,6 +98,7 @@ export const ADD_BOOK = gql`
       title
       published
       genres
+      id
     }
   }
 `;
