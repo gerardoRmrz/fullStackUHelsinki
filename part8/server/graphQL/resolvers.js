@@ -8,22 +8,18 @@ const jwt = require("jsonwebtoken");
 const pubSub = new PubSub();
 
 const resolvers = {
-  Book: {
-    author: async (root) => {
-      const result = await Author.findById(root.author.id.toString());
-      return {
-        id: root.author.id.toString(),
-        name: result.name,
-        born: result.born,
-      };
+  Author: {
+    bookCount: async (root) => {
+      const result = await Book.find({ author: root._id });
+      return result.map((b) => b.id);
     },
   },
   Query: {
-    bookCount: async () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (Object.keys(args).length === 0) {
-        return await Book.find({}).populate("author");
+        const result = await Book.find({}).populate("author");
+        return result;
       }
 
       if (args.genre) {
@@ -32,7 +28,8 @@ const resolvers = {
       }
     },
     allAuthors: async () => {
-      return Author.find({});
+      const result = await Author.find({});
+      return result;
     },
     recommendedBooks: async (root, _, context) => {
       const currentUser = context.currentUser;
